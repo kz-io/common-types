@@ -1,0 +1,217 @@
+[
+  {
+    "kind": "interface",
+    "name": "IHelpful",
+    "location": {
+      "filename": "file:///workspaces/common-types/src/types/interfaces.ts",
+      "line": 24,
+      "col": 0,
+      "byteIndex": 527
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "The `IHelpful` interface provides a consistent property providing a URL to help resources.\n",
+      "tags": [
+        {
+          "kind": "example",
+          "doc": "```ts\nclass Exception extends Error implements IHelpful {\n helpUrl = 'https://example.com';\n}\n\ntry {\n  throw new Exception('I make stuff up. Nothing really happened');\n} catch(e) {\n  console.log((e as IHelpful).helpUrl);\n  //  https://example.com\n}\n```"
+        }
+      ]
+    },
+    "interfaceDef": {
+      "extends": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "helpUrl",
+          "location": {
+            "filename": "file:///workspaces/common-types/src/types/interfaces.ts",
+            "line": 28,
+            "col": 2,
+            "byteIndex": 609
+          },
+          "jsDoc": {
+            "doc": "The help URL for this object type."
+          },
+          "params": [],
+          "computed": false,
+          "optional": false,
+          "tsType": {
+            "repr": "string",
+            "kind": "keyword",
+            "keyword": "string"
+          },
+          "typeParams": []
+        }
+      ],
+      "callSignatures": [],
+      "indexSignatures": [],
+      "typeParams": []
+    }
+  },
+  {
+    "kind": "typeAlias",
+    "name": "Codebase",
+    "location": {
+      "filename": "file:///workspaces/common-types/src/types/types.ts",
+      "line": 50,
+      "col": 0,
+      "byteIndex": 1101
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "The types of codebases, according to integereleven.\n\n> NOTE: Any codebase name. Not yet constrained."
+    },
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "string",
+        "kind": "keyword",
+        "keyword": "string"
+      },
+      "typeParams": []
+    }
+  },
+  {
+    "kind": "typeAlias",
+    "name": "DecoratorTarget",
+    "location": {
+      "filename": "file:///workspaces/common-types/src/types/types.ts",
+      "line": 33,
+      "col": 0,
+      "byteIndex": 699
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "The types of TypeScript decorator targets."
+    },
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "",
+        "kind": "union",
+        "union": [
+          {
+            "repr": "class",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "class"
+            }
+          },
+          {
+            "repr": "method",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "method"
+            }
+          },
+          {
+            "repr": "property",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "property"
+            }
+          },
+          {
+            "repr": "parameter",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "parameter"
+            }
+          },
+          {
+            "repr": "accessor",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "accessor"
+            }
+          }
+        ]
+      },
+      "typeParams": []
+    }
+  },
+  {
+    "kind": "typeAlias",
+    "name": "IndeterminateObject",
+    "location": {
+      "filename": "file:///workspaces/common-types/src/types/types.ts",
+      "line": 28,
+      "col": 0,
+      "byteIndex": 567
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "An alias of any object with any indexable property key and unknown (indeterminate) value.\n",
+      "tags": [
+        {
+          "kind": "example",
+          "doc": "```ts\nconst reg: IndeterminateObject = {\n  name: \"Dakota Cortez\",\n  age: 15,\n  username: \"dc655\"\n};\n\nfunction readReg<K extends keyof IndeterminateObject>(key: K) {\n  return reg[key];\n}\n\nconsole.log(readReg(\"na\"));\n//  undefined\nconsole.log(readReg(\"name\"));\n//  Dakota Cortez\n```"
+        }
+      ]
+    },
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "Record",
+        "kind": "typeRef",
+        "typeRef": {
+          "typeParams": [
+            {
+              "repr": "",
+              "kind": "union",
+              "union": [
+                {
+                  "repr": "number",
+                  "kind": "keyword",
+                  "keyword": "number"
+                },
+                {
+                  "repr": "string",
+                  "kind": "keyword",
+                  "keyword": "string"
+                },
+                {
+                  "repr": "symbol",
+                  "kind": "keyword",
+                  "keyword": "symbol"
+                }
+              ]
+            },
+            {
+              "repr": "unknown",
+              "kind": "keyword",
+              "keyword": "unknown"
+            }
+          ],
+          "typeName": "Record"
+        }
+      },
+      "typeParams": []
+    }
+  },
+  {
+    "kind": "typeAlias",
+    "name": "SoftwareOperation",
+    "location": {
+      "filename": "file:///workspaces/common-types/src/types/types.ts",
+      "line": 57,
+      "col": 0,
+      "byteIndex": 1265
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "The types of software operations, according to integereleven.\n\n> NOTE: Any software operation. Not yet constrained."
+    },
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "string",
+        "kind": "keyword",
+        "keyword": "string"
+      },
+      "typeParams": []
+    }
+  }
+]
