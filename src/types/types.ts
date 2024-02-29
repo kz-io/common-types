@@ -80,11 +80,7 @@ export type SystemOS =
   | 'illumos';
 
 /**
-<<<<<<< HEAD
- * The type of system architectures.
-=======
  * The type of system architecture.
->>>>>>> bd96409f2e2e06daad90efe42d1ae114711581c4
  */
 export type SystemArchitecture =
   /** 64-bit version of the x86 instruction set. */
