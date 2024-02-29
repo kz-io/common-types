@@ -213,5 +213,139 @@
       },
       "typeParams": []
     }
+  },
+  {
+    "kind": "typeAlias",
+    "name": "SystemArchitecture",
+    "location": {
+      "filename": "file:///workspaces/common-types/src/types/types.ts",
+      "line": 89,
+      "col": 0,
+      "byteIndex": 2208
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "<<<<<<< HEAD\nThe type of system architectures.\n=======\nThe type of system architecture.\n>>>>>>> bd96409f2e2e06daad90efe42d1ae114711581c4"
+    },
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "",
+        "kind": "union",
+        "union": [
+          {
+            "repr": "x86_64",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "x86_64"
+            }
+          },
+          {
+            "repr": "aarch64",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "aarch64"
+            }
+          }
+        ]
+      },
+      "typeParams": []
+    }
+  },
+  {
+    "kind": "typeAlias",
+    "name": "SystemOS",
+    "location": {
+      "filename": "file:///workspaces/common-types/src/types/types.ts",
+      "line": 62,
+      "col": 0,
+      "byteIndex": 1350
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "The supported operating systems."
+    },
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "",
+        "kind": "union",
+        "union": [
+          {
+            "repr": "darwin",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "darwin"
+            }
+          },
+          {
+            "repr": "linux",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "linux"
+            }
+          },
+          {
+            "repr": "android",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "android"
+            }
+          },
+          {
+            "repr": "windows",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "windows"
+            }
+          },
+          {
+            "repr": "freebsd",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "freebsd"
+            }
+          },
+          {
+            "repr": "netbsd",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "netbsd"
+            }
+          },
+          {
+            "repr": "aix",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "aix"
+            }
+          },
+          {
+            "repr": "solaris",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "solaris"
+            }
+          },
+          {
+            "repr": "illumos",
+            "kind": "literal",
+            "literal": {
+              "kind": "string",
+              "string": "illumos"
+            }
+          }
+        ]
+      },
+      "typeParams": []
+    }
   }
 ]

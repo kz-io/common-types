@@ -55,3 +55,35 @@ export type Codebase = string;
  * > NOTE: Any software operation. Not yet constrained.
  */
 export type SoftwareOperation = string;
+
+/**
+ * The supported operating systems.
+ */
+export type SystemOS =
+  /** Unix core of Apple products. (mac OS, iOS, iPadOS…) */
+  | 'darwin'
+  /** Operating system based on the Linux kernel. */
+  | 'linux'
+  /** Modified version of the Linux kernel designed for touch devices. */
+  | 'android'
+  /** Proprietary OS developed by Microsoft. */
+  | 'windows'
+  /** Unix-like operating system descending from Berkeley Software Distribution. */
+  | 'freebsd'
+  /** Unix-like operating system descending from Berkeley Software Distribution. */
+  | 'netbsd'
+  /** Proprietary Unix system developed by IBM. */
+  | 'aix'
+  /** Proprietary Unix system developed by Oracle. */
+  | 'solaris'
+  /** Unix operating system based on OpenSolaris. */
+  | 'illumos';
+
+/**
+ * The type of system architecture.
+ */
+export type SystemArchitecture =
+  /** 64-bit version of the x86 instruction set. */
+  | 'x86_64'
+  /** 64-bit extension of the ARM architecture family. */
+  | 'aarch64';

@@ -11,4 +11,6 @@ export type {
   DecoratorTarget,
   IndeterminateObject,
   SoftwareOperation,
+  SystemArchitecture,
+  SystemOS,
 } from './types.ts';
