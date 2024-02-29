@@ -219,13 +219,13 @@
     "name": "SystemArchitecture",
     "location": {
       "filename": "file:///workspaces/common-types/src/types/types.ts",
-      "line": 85,
+      "line": 89,
       "col": 0,
-      "byteIndex": 2102
+      "byteIndex": 2208
     },
     "declarationKind": "export",
     "jsDoc": {
-      "doc": "The type of system architectures."
+      "doc": "<<<<<<< HEAD\nThe type of system architectures.\n=======\nThe type of system architecture.\n>>>>>>> bd96409f2e2e06daad90efe42d1ae114711581c4"
     },
     "typeAliasDef": {
       "tsType": {
