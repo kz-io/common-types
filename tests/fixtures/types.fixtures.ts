@@ -10,6 +10,8 @@ import type {
   IHelpful,
   IndeterminateObject,
   SoftwareOperation,
+  SystemArchitecture,
+  SystemOS,
 } from '../../mod.ts';
 
 const _typeFixture0: IndeterminateObject = {
@@ -39,3 +41,25 @@ const _typeFixture9: SoftwareOperation = 'everything';
 const _typeFixture10: IHelpful = {
   helpUrl: 'https://example.com',
 };
+
+const _typeFixture11: SystemOS = 'aix';
+
+const _typeFixture12: SystemOS = 'android';
+
+const _typeFixture13: SystemOS = 'darwin';
+
+const _typeFixture14: SystemOS = 'freebsd';
+
+const _typeFixture15: SystemOS = 'illumos';
+
+const _typeFixture16: SystemOS = 'linux';
+
+const _typeFixture17: SystemOS = 'netbsd';
+
+const _typeFixture18: SystemOS = 'solaris';
+
+const _typeFixture19: SystemOS = 'windows';
+
+const _typeFixture20: SystemArchitecture = 'aarch64';
+
+const _typeFixture21: SystemArchitecture = 'x86_64';
