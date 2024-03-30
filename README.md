@@ -1,6 +1,6 @@
 <p align="center">
 <!-- Update log -->
-<img alt="kz.io logo" height="70" src="https://raw.githubusercontent.com/kz-io/.github/main/profile/img/banner/fc.svg" />
+<img alt="kz.io logo" height="70" src="https://raw.githubusercontent.com/kz-io/.github/main/profile/img/fc/text.svg" />
 <strong>common-types</strong>
 </p>
 
@@ -119,7 +119,7 @@ The MIT License (MIT) 2022 integereleven. Refer to [LICENSE][license] for detail
 <img
   alt="kz.io logo"
   height="24"
-  src="https://raw.githubusercontent.com/i11n/.github/main/profile/img/frm/logo-open-source.svg"
+  src="https://raw.githubusercontent.com/i11n/.github/main/profile/img/fc/open.svg"
 />
 </p>
 
