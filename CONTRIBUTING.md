@@ -1,22 +1,22 @@
 # Contributing
 
-Thank you for your interest in contributing to the kz.io libraries. There
+Thank you for your interest in contributing to the kz libraries. There
 are multiple ways to contribute, including reporting or resolving issues,
 requesting or adding new features, improving documentation, creating guides,
 adding translations, and more.
 
 ## Found an issue?
 
-If you find an issue in a kz.io libraries source code, you can help by
+If you find an issue in a kz library source code, you can help by
 [submitting an issue][issues] to its GitHub Repository. If you have a fix for
 the issue, you can submit a Pull Request.
 
 ## Want a feature?
 
 You can request a new feature in a library by [submitting an issue][feature] to
-a kz.io library's GitHub Repository. If you are unsure which library a
+a kz library's GitHub Repository. If you are unsure which library a
 feature should be requested in, you can [submit an issue][feature-new] on the
-`kz.io/please` repo.
+`kz/please` repo.
 
 ## What you need to know
 
@@ -100,7 +100,7 @@ git push origin branch-name-here
 ## Commit messages
 
 We follow the [Conventional Commits][conventional-commit] commit message
-convention. The core kz.io libraries do not have any scopes.
+convention. The core kz libraries do not have any scopes.
 
 Commit messages should be structured like this:
 
@@ -141,8 +141,8 @@ project with respect and courtesy.
 [deno]: https://deno.land "Deno: A modern web platform for writing JavaScript"
 [conventional-commit]: https://www.conventionalcommits.org/en/v1.0.0/ "Conventional Commits: A guide to commit messages"
 [code-of-conduct]: https://github.com/kz-io/.github/blob/main/.github/CODE_OF_CONDUCT.md "Contributor Code of Conduct"
-[feature-new]: https://github.com/kz-io/please/issues/new?template=feature.yaml&title= "Request a new feature in kz.io"
-[issues]: https://github.com/kz-io/common-types/issues/new?template=issue.yaml&title= "Report an issue in kz.io/common-types"
-[feature]: https://github.com/kz-io/common-types/issues/new?template=feature.md&title= "Request a new feature in kz.io/common-types"
-[documentation]: https://github.com/kz-io/common-types/labels/type%3A%20docs "Documentation issues in kz.io/common-types"
-[first-issue]: https://github.com/kz-io/common-types/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22 "Good first issues in kz.io/common-types"
+[feature-new]: https://github.com/kz-io/please/issues/new?template=feature.yaml&title= "Request a new feature in kz"
+[issues]: https://github.com/kz-io/common-types/issues/new?template=issue.yaml&title= "Report an issue in kz/common-types"
+[feature]: https://github.com/kz-io/common-types/issues/new?template=feature.md&title= "Request a new feature in kz/common-types"
+[documentation]: https://github.com/kz-io/common-types/labels/type%3A%20docs "Documentation issues in kz/common-types"
+[first-issue]: https://github.com/kz-io/common-types/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22 "Good first issues in kz/common-types"

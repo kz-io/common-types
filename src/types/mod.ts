@@ -1,11 +1,10 @@
 /**
- * This file re-exports the package enums, type aliases, and interfaces into the public API.
- *
- * @copyright 2024 integereleven. All rights reserved. MIT license.
+ * @copyright 2020-2024 integereleven. All rights reserved. MIT license.
+ * @file Exports public types from the module.
  */
 
-export * from './enums/mod.ts';
-export type { IHelpful } from './interfaces.ts';
+export type { IHashable, IHelpful } from './interfaces.ts';
+
 export type {
   Codebase,
   DecoratorTarget,
@@ -13,4 +12,4 @@ export type {
   SoftwareOperation,
   SystemArchitecture,
   SystemOS,
-} from './types.ts';
+} from './type-aliases.ts';

@@ -1,9 +1,7 @@
 /**
- * This file exports all of the package features, enums, type aliases, and interfaces into the public API.
- *
- * @copyright 2024 integereleven. All rights reserved. MIT license.
+ * @copyright 2020-2024 integereleven. All rights reserved. MIT license.
+ * @file Exports the public API of the module.
  */
 
-export * from './exceptions/mod.ts';
 export * from './types/mod.ts';
-// export { ExplicitExport } from "./constants.ts";
+export { VERSION } from './version.ts';

@@ -1,14 +1,13 @@
 <p align="center">
-<!-- Update log -->
-<img alt="kz.io logo" height="70" src="https://raw.githubusercontent.com/kz-io/.github/main/profile/img/fc/text.svg" />
+<img alt="kz logo" height="48" src="https://raw.githubusercontent.com/i11n/.github/main/svg/kz/color/kz.svg" />
 <strong>common-types</strong>
 </p>
 
 <p align="center">
-kz.io is a collection of easy-to-use utility and feature libraries for creating anything you want with the <a href="https://deno.land">Deno</a> runtime.
+kz is a collection of easy-to-use utility and feature libraries for creating anything you want with the <a href="https://deno.com">Deno</a> runtime.
 </p>
 
-<h1 align="center">kz.io - common-types</h1>
+<h1 align="center">@kz/common-types</h1>
 
 <p align="center">
 <!-- @TODO Package description -->
@@ -23,7 +22,7 @@ kz.io is a collection of easy-to-use utility and feature libraries for creating 
 </p>
 
 <p align="center">
-<a href="https://github.com/kz-io/common-types/blob/main/CODE_OF_CONDUCT.md">
+<a href="https://github.com/i11n/.github/blob/main/.github/CODE_OF_CONDUCT.md">
   <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=flat-square" />
 </a>
 <a href="https://github.com/kz-io/common-types/commits">
@@ -55,44 +54,57 @@ kz.io is a collection of easy-to-use utility and feature libraries for creating 
 
 [(to top)](#table-of-contents)
 
-To install, you simply need to re-export the library features with your `./deps.ts` file.
+### JSR
 
-```ts
-// ./deps.ts
-export * from 'https://denopkg.com/kz-io/common-types/mod.ts';
-//  or specific features
+[jsr][JSR] is used for stable releases.
+
+To install, simply run the `deno add` command:
+
+```bash
+$ deno add @kz/common-types
 ```
 
-and then import them from your `./deps.ts` file into the files they are needed.
+You may also specify a specific version:
 
-```ts
-// ./src/app.ts
-import { VERSION } from '../deps.ts';
-//  or other features
+```bash
+$ deno add @kz/common-types@^0.0.1
 ```
 
-You can specify a specific branch or release to re-export:
+And then import into your module.
 
-**Export from a specific branch**
-
-```ts
-export * from 'https://denopkg.com/kz-io/common-types@dev-fix-06145/mod.ts';
+```ts ignore
+import {} from '@kz/common-types';
 ```
 
-**Export from a specific release**
+### denopkg.com
 
-```ts
-export * from 'https://denopkg.com/kz-io/common-types@0.1.0-alpha/mod.ts';
+If you require a development or unstable release, you can use denopkg.com to import a package.
+
+```json
+// deno.json
+{
+  "imports": {
+    "@kz/common-types": "https://denopkg.com/kz-io/common-types"
+  }
+}
 ```
 
-**Export the latest release**
+You may also specify a release or branch.
 
-```ts
-export * from 'https://denopkg.com/kz-io/common-types@latest/mod.ts';
+```json
+// deno.json
+{
+  "imports": {
+    "@kz/common-types": "https://denopkg.com/kz-io/common-types@dev"
+  }
+}
 ```
 
-> **Note:** If no branch or tag is specified in the re-export, then it will pull from the main branch, which we only merge into when preparing a release.\
-> Check out the [branches][branches] and [releases][releases] see what's available.
+And then import into your module.
+
+```ts ignore
+import {} from '@kz/common-types';
+```
 
 ## Examples
 
@@ -118,13 +130,14 @@ The MIT License (MIT) 2022 integereleven. Refer to [LICENSE][license] for detail
 <p align="center">
 <img
   alt="kz.io logo"
-  height="24"
-  src="https://raw.githubusercontent.com/i11n/.github/main/profile/img/fc/open.svg"
+  height="64"
+  src="https://raw.githubusercontent.com/i11n/.github/main/svg/brand/color/open-stroke.svg"
 />
 </p>
 
-[deno]: https://deno.land "Deno homepage"
-[branches]: https://github.com/kz-io/common-types/branches "kz.io/common-types branches on GitHub"
-[releases]: https://github.com/kz-io/common-types/releases "kz.io/common-types releases on GitHub"
-[contributing]: https://github.com/kz-io/common-types/blob/main/CONTRIBUTING.md "kz.io/common-types contributing guidelines"
-[license]: https://github.com/kz-io/common-types/blob/main/LICENSE "kz.io/common-types license"
+[deno]: https://deno.dom "Deno homepage"
+[jsr]: https://jsr.io "JSR homepage"
+[branches]: https://github.com/kz-io/common-types/branches "@kz/common-types branches on GitHub"
+[releases]: https://github.com/kz-io/common-types/releases "@kz/common-types releases on GitHub"
+[contributing]: https://github.com/kz-io/common-types/blob/main/CONTRIBUTING.md "@kz/common-types contributing guidelines"
+[license]: https://github.com/kz-io/common-types/blob/main/LICENSE "@kz/common-types license"
