@@ -55,7 +55,10 @@
       "cov.lcov",
       "test-data",
       "docs",
-      ".git"
+      ".git",
+      ".github",
+      ".devcontainer",
+      ".vscode"
     ]
   }
 }
