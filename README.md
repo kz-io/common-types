@@ -10,11 +10,11 @@ kz is a collection of easy-to-use utility and feature libraries for creating any
 <h1 align="center">@kz/common-types</h1>
 
 <p align="center">
-<!-- @TODO Package description -->
+A collection of the most common types used across kz packages, adapted for API consistency and case-coverage, exhaustively tested, and documented thoroughly.
 </p>
 
 <p align="center">
-<!-- @TODO Link to documentation and other resources -->
+<a href="https://jsr.io/@kz/common-types/doc">Docs</a>
 </p>
 
 <p align="center">
@@ -22,18 +22,17 @@ kz is a collection of easy-to-use utility and feature libraries for creating any
 </p>
 
 <p align="center">
-<a href="https://github.com/i11n/.github/blob/main/.github/CODE_OF_CONDUCT.md">
-  <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=flat-square" />
-</a>
 <a href="https://github.com/kz-io/common-types/commits">
   <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/kz-io/common-types?style=flat-square">
-</a>
-<a href="https://github.com/kz-io/common-types/releases">
-  <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/kz-io/common-types?style=flat-square" />
 </a>
 <a href="https://github.com/kz-io/common-types/issues">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/kz-io/common-types?style=flat-square">
 </a>
+<!-- No symbols to cover
+<a href="https://codecov.io/gh/kz-io/common-types" >
+  <img src="https://codecov.io/gh/kz-io/common-types/graph/badge.svg?token=EK5CNEBUPG"/>
+</a>
+-->
 </p>
 
 ## Table of contents
@@ -53,8 +52,6 @@ kz is a collection of easy-to-use utility and feature libraries for creating any
 ## Installation
 
 [(to top)](#table-of-contents)
-
-### JSR
 
 [jsr][JSR] is used for stable releases.
 
@@ -76,35 +73,14 @@ And then import into your module.
 import {} from '@kz/common-types';
 ```
 
-### denopkg.com
-
-If you require a development or unstable release, you can use denopkg.com to import a package.
-
-```json
-// deno.json
-{
-  "imports": {
-    "@kz/common-types": "https://denopkg.com/kz-io/common-types"
-  }
-}
-```
-
-You may also specify a release or branch.
-
-```json
-// deno.json
-{
-  "imports": {
-    "@kz/common-types": "https://denopkg.com/kz-io/common-types@dev"
-  }
-}
-```
-
-And then import into your module.
-
-```ts ignore
-import {} from '@kz/common-types';
-```
+<p align="center">
+<a href="https://jsr.io/@kz/common-types">
+  <img src="https://jsr.io/badges/@kz/common-types" alt="" />
+</a>
+<a href="https://jsr.io/@kz/common-types">
+  <img src="https://jsr.io/badges/@kz/common-types/score" alt="" />
+</a>
+</p>
 
 ## Examples
 
@@ -120,6 +96,12 @@ import {} from '@kz/common-types';
 [(to top)](#table-of-contents)
 
 Contributions are welcome! Take a look at our [contributing guidelines][contributing] to get started.
+
+<p align="center">
+<a href="https://github.com/i11n/.github/blob/main/.github/CODE_OF_CONDUCT.md">
+  <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=flat-square" />
+</a>
+</p>
 
 ## License
 

@@ -1,7 +1,4 @@
-name: ci
-
-permissions:
-  contents: read
+name: CI
 
 on:
   push:
@@ -9,23 +6,27 @@ on:
   pull_request:
     branches: ["main", "dev"]
 
+permissions:
+  contents: read
+
 jobs:
-  test:
+  tests:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
+      fail-fast: false
       matrix:
-        deno: 
-            - v1.x
-        os:
+        os: 
           - ubuntu-22.04
-          - macos-12
           - windows-2022
+          - macOS-12
+        deno: 
+          - v1.42.4
+          - v1.x
 
     steps:
-      - name: Clone repo
+      - name: Setup repo
         uses: actions/checkout@v4
-        with:
-          submodules: true
 
       - name: Setup Deno
         uses: denoland/setup-deno@v1
@@ -33,22 +34,25 @@ jobs:
           deno-version: ${{ matrix.deno }}
         
       - name: Run tests
-        run: deno test -A
+        run: deno task test
         
-  lint:
+  cleanliness:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-22.04
+
     steps:
-      - name: Clone repo
+      - name: Setup repo
         uses: actions/checkout@v4
 
       - name: Install Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.x
+          deno-version: v1.41.1
 
       - name: Run formatter
         run: deno fmt --check
