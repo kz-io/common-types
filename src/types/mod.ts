@@ -7,8 +7,11 @@ export type { IHashable, IHelpful } from './interfaces.ts';
 
 export type {
   Codebase,
+  Constructor,
   DecoratorTarget,
+  Defined,
   IndeterminateObject,
+  Scalar,
   SoftwareOperation,
   SystemArchitecture,
   SystemOS,
