@@ -114,21 +114,21 @@ export type Scalar = boolean | bigint | number | string | symbol;
  * @example
  * ```ts
  * import { assertEquals } from '@std/assert';
- * import type { Contructor } from './type-aliases.ts';
+ * import type { Constructor } from './type-aliases.ts';
  *
  * class MyClass {
  *   constructor(public name: string) {}
  * }
  *
- * const MyClassContructor: Contructor<MyClass> = MyClass;
+ * const MyClassConstructor: Constructor<MyClass> = MyClass;
  *
- * const myClassInstance = new MyClassContructor('My Class');
+ * const myClassInstance = new MyClassConstructor('My Class');
  *
  * assertEquals(myClassInstance.name, 'My Class');
  * ```
  */
 // deno-lint-ignore no-explicit-any
-export type Contructor<T> = new (...args: any) => T;
+export type Constructor<T> = new (...args: any) => T;
 
 /**
  * Describe a type that if defined, is of type T, otherwise is `never`.

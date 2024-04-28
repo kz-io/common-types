@@ -8,7 +8,7 @@ import { assertEquals } from '@std/assert';
 
 import type {
   Codebase,
-  Contructor,
+  Constructor,
   DecoratorTarget,
   Defined,
   IndeterminateObject,
@@ -29,7 +29,7 @@ class Test {
   }
 }
 
-const _constructor: Contructor<Test> = Test;
+const _constructor: Constructor<Test> = Test;
 
 const _decoratorTargetClass: DecoratorTarget = 'class';
 const _decoratorTargetMethod: DecoratorTarget = 'method';
