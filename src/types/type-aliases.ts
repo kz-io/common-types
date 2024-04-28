@@ -93,3 +93,53 @@ export type SystemOS =
 export type SystemArchitecture =
   | 'x86_64'
   | 'aarch64';
+
+/**
+ * Describe the scalar types, which are value types which can be represented by a single value.
+ *
+ * @example
+ * ```ts
+ * import type { Scalar } from './type-aliases.ts';
+ *
+ * const scalar: Scalar = 42;
+ * ```
+ */
+export type Scalar = boolean | bigint | number | string | symbol;
+
+/**
+ * Type alias for a class constructor.
+ *
+ * @param T - The type of the class.
+ *
+ * @example
+ * ```ts
+ * import { assertEquals } from '@std/assert';
+ * import type { Contructor } from './type-aliases.ts';
+ *
+ * class MyClass {
+ *   constructor(public name: string) {}
+ * }
+ *
+ * const MyClassContructor: Contructor<MyClass> = MyClass;
+ *
+ * const myClassInstance = new MyClassContructor('My Class');
+ *
+ * assertEquals(myClassInstance.name, 'My Class');
+ * ```
+ */
+// deno-lint-ignore no-explicit-any
+export type Contructor<T> = new (...args: any) => T;
+
+/**
+ * Describe a type that if defined, is of type T, otherwise is `never`.
+ *
+ * @example
+ * ```ts
+ * import type { Defined } from './type-aliases.ts';
+ *
+ * let value: Defined<number>;
+ *
+ * value = 42;
+ * ```
+ */
+export type Defined<T> = T extends undefined ? never : T;
