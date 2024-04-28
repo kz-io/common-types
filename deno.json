@@ -1,10 +1,7 @@
 {
   "name": "@kz/common-types",
-  "version": "0.0.2",
-  "exports": {
-    ".": "./mod.ts",
-    "./types": "./src/types/mod.ts"
-  },
+  "version": "0.0.3",
+  "exports": "./mod.ts",
   "lint": {
     "rules": {
       "tags": [

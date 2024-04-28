@@ -8,8 +8,11 @@ import { assertEquals } from '@std/assert';
 
 import type {
   Codebase,
+  Contructor,
   DecoratorTarget,
+  Defined,
   IndeterminateObject,
+  Scalar,
   SoftwareOperation,
   SystemArchitecture,
   SystemOS,
@@ -20,11 +23,27 @@ const _codebase1: Codebase = 'module';
 const _codebase2: Codebase = 'plugin';
 const _codebase3: Codebase = 'extension';
 
+class Test {
+  constructor() {
+    return this;
+  }
+}
+
+const _constructor: Contructor<Test> = Test;
+
 const _decoratorTargetClass: DecoratorTarget = 'class';
 const _decoratorTargetMethod: DecoratorTarget = 'method';
 const _decoratorTargetProperty: DecoratorTarget = 'property';
 const _decoratorTargetParameter: DecoratorTarget = 'parameter';
 const _decoratorTargetAccessor: DecoratorTarget = 'accessor';
+
+const _defined1: Defined<string> = 'defined';
+let _defined2: Defined<string>;
+
+const _scalarBoolean: Scalar = true;
+const _scalarNumber: Scalar = 1;
+const _scalarString: Scalar = 'scalar';
+const _scalarSymbol: Scalar = Symbol('scalar');
 
 const _indeterminateObjectEmpty: IndeterminateObject = {};
 const _indeterminateObjectNumber: IndeterminateObject = { 0: 'zero' };
@@ -58,6 +77,10 @@ describe('types', () => {
     assertEquals(_codebase3, 'extension');
   });
 
+  it('should have a constructor type', () => {
+    assertEquals(_constructor, Test);
+  });
+
   it('should have a decorator target type', () => {
     assertEquals(_decoratorTargetClass, 'class');
     assertEquals(_decoratorTargetMethod, 'method');
@@ -66,11 +89,27 @@ describe('types', () => {
     assertEquals(_decoratorTargetAccessor, 'accessor');
   });
 
+  it('should have a defined type', () => {
+    assertEquals(_defined1, 'defined');
+    assertEquals(_defined2, undefined);
+
+    _defined2 = _defined1;
+
+    assertEquals(_defined2, _defined1);
+  });
+
   it('should have an indeterminate object type', () => {
     assertEquals(_indeterminateObjectEmpty, {});
     assertEquals(_indeterminateObjectNumber, { 0: 'zero' });
     assertEquals(_indeterminateObjectString, { 'one': 1 });
     assertEquals(_indeterminateObjectSymbol, { [symbol]: 2 });
+  });
+
+  it('should have a scalar type', () => {
+    assertEquals(_scalarBoolean, true);
+    assertEquals(_scalarNumber, 1);
+    assertEquals(_scalarString, 'scalar');
+    assertEquals(_scalarSymbol, _scalarSymbol);
   });
 
   it('should have a software operation type', () => {
