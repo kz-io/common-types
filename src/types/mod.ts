@@ -3,11 +3,20 @@
  * @file Exports public types from the module.
  */
 
-export type { IHashable, IHelpful } from './interfaces.ts';
+export type {
+  IHashable,
+  IHelpful,
+  IPrimitiveConvertible,
+  TCloneable,
+  TConverter,
+  TConvertible,
+} from './interfaces.ts';
 
 export type {
   Codebase,
   Constructor,
+  Converter,
+  ConverterFn,
   DecoratorTarget,
   Defined,
   IndeterminateObject,
