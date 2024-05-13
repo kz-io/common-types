@@ -3,6 +3,8 @@
  * @file Type aliases for the module. For interfaces, see ./interfaces.ts.
  */
 
+import type { TConverter } from './interfaces.ts';
+
 /**
  * Describes an object of indeterminate property value, keyed by a number, string, or symbol.
  *
@@ -95,7 +97,7 @@ export type SystemArchitecture =
   | 'aarch64';
 
 /**
- * Describe the scalar types, which are value types which can be represented by a single value.
+ * Describes the scalar types, which are value types which can be represented by a single value.
  *
  * @example
  * ```ts
@@ -109,7 +111,7 @@ export type Scalar = boolean | bigint | number | string | symbol;
 /**
  * Type alias for a class constructor.
  *
- * @param T - The type of the class.
+ * @template T - The type of the class.
  *
  * @example
  * ```ts
@@ -131,7 +133,9 @@ export type Scalar = boolean | bigint | number | string | symbol;
 export type Constructor<T> = new (...args: any) => T;
 
 /**
- * Describe a type that if defined, is of type T, otherwise is `never`.
+ * Describes a type that if defined, is of type T, otherwise is `never`.
+ *
+ * @template T The type of the value if defined.
  *
  * @example
  * ```ts
@@ -143,3 +147,31 @@ export type Constructor<T> = new (...args: any) => T;
  * ```
  */
 export type Defined<T> = T extends undefined ? never : T;
+
+/**
+ * Describes a function that converts a value from one type to another.
+ *
+ * @template F The type to convert from.
+ * @template T The type to convert to.
+ *
+ * @example
+ * ```ts
+ * import type { ConverterFn } from './type-aliases.ts';
+ *
+ * const toNumber: ConverterFn<string, number> = (value) => parseInt(value);
+ *
+ * const numberValue = toNumber('42');
+ * ```
+ */
+export type ConverterFn<F, T> = (value: F) => T;
+
+/**
+ * Describes a function or object that converts a value from one type to another.
+ *
+ * @template F The type to convert from.
+ * @template T The type to convert to.
+ *
+ * @see {@link ConverterFn}
+ * @see {@link TConverter}
+ */
+export type Converter<F, T> = TConverter<F, T> | ConverterFn<F, T>;
