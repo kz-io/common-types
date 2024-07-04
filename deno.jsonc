@@ -1,6 +1,6 @@
 {
   "name": "@kz/common-types",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "exports": "./mod.ts",
   "lint": {
     "rules": {
@@ -26,11 +26,12 @@
     "semiColons": true
   },
   "tasks": {
-    "fmt": "deno fmt",
+    "fmt": "deno fmt && deno fmt --check",
     "lint": "deno lint",
     "test": "deno test --allow-all --doc --trace-leaks",
     "docs": "deno doc --html --name=@kz/common-types ./mod.ts",
-    "pre-commit": "deno task test && deno task lint && deno task fmt && deno task docs"
+    "jsr:check": "deno publish --dry-run --allow-dirty",
+    "pre-commit": "deno task docs && deno task jsr:check && deno task lint && deno task fmt"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@^0.221.0",
@@ -49,7 +50,7 @@
       "LICENSE",
       "mod.ts",
       "src/**/*.ts",
-      "deno.json",
+      "deno.jsonc",
       "deno.lock"
     ],
     "exclude": [
