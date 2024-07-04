@@ -23,7 +23,6 @@ general development.
 <a href="https://jsr.io/@kz/common-types/doc">API Docs</a>
 </p>
 
-
 ```tsx
 import type { IHelpful, Scalar } from './mod.ts';
 
