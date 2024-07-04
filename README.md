@@ -13,8 +13,9 @@ maintenance of complex, performant, and scalable
 <h1 align="center">@kz/common-types</h1>
 
 <p align="center">
-A collection of the most common types used across kz packages, adapted for API
-consistency and case-coverage, exhaustively tested, and documented thoroughly.
+The <code>@kz/common-types</code> module provides base type aliases, interfaces, and enums
+for the core modules and others commonly used across kz libraries and in
+general development.
 </p>
 
 <p align="center">
@@ -22,9 +23,6 @@ consistency and case-coverage, exhaustively tested, and documented thoroughly.
 <a href="https://jsr.io/@kz/common-types/doc">API Docs</a>
 </p>
 
-The `@kz/common-types` module provides base type aliases, interfaces, and enums
-for the core modules and others commonly used across kz libraries and in
-general development.
 
 ```tsx
 import type { IHelpful, Scalar } from './mod.ts';
