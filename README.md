@@ -89,9 +89,6 @@ The MIT License (MIT) 2022 integereleven. Refer to [LICENSE][license] for detail
 <a href="https://github.com/kz-io/common-types/issues">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/kz-io/common-types?style=flat-square">
 </a>
-<a href="https://codecov.io/gh/kz-io/common-types" >
-  <img src="https://codecov.io/gh/kz-io/common-types/graph/badge.svg?token=TH8uOvl1sk"/>
-</a>
 </p>
 
 <p align="center">
