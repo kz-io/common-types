@@ -1,22 +1,60 @@
 <p align="center">
-<img alt="kz logo" height="48" src="https://raw.githubusercontent.com/i11n/.github/main/svg/kz/color/kz.svg" />
+<img alt="kz logo" height="64" src="https://raw.githubusercontent.com/i11n/.github/main/svg/kz/color/kz.svg" />
 <strong>common-types</strong>
 </p>
 
 <p align="center">
-kz is a collection of easy-to-use utility and feature libraries for creating anything you want with the <a href="https://deno.com">Deno</a> runtime.
+kz is a library providing heavily tested and documented features with
+consistent and predictable APIs designed to simplify the development and
+maintenance of complex, performant, and scalable
+<a href="https://deno.com">Deno</a> applications.
 </p>
 
 <h1 align="center">@kz/common-types</h1>
 
 <p align="center">
-A collection of the most common types used across kz packages, adapted for API consistency and case-coverage, exhaustively tested, and documented thoroughly.
+The <code>@kz/common-types</code> module provides base type aliases, interfaces, and enums
+for the core modules and others commonly used across kz libraries and in
+general development.
 </p>
 
 <p align="center">
 <a href="https://jsr.io/@kz/common-types">Overview</a> |
 <a href="https://jsr.io/@kz/common-types/doc">API Docs</a>
 </p>
+
+```tsx
+import type { IHelpful, Scalar } from './mod.ts';
+
+const help: IHelpful = {
+  helpUrl: 'https://example.com',
+};
+
+const pathId: Scalar = help.helpUrl;
+```
+
+Why are enums here?
+
+Enums, as integereleven uses them, only have numeric values. Because of this,
+we can generally get away with using the enum only as a type and provide a
+matching number without referencing the enum itself.
+
+We use the enums more as type documentation for developers.
+
+```tsx
+import { assertEquals } from '@std/assert';
+import type { ComparisonResult } from './mod.ts';
+
+function compare(a: number, b: number): ComparisonResult {
+  if (a === b) return 0;
+
+  return a > b ? 1 : -1;
+}
+
+const result = compare(10, 9); // ComparisonResult.Greater
+
+assertEquals(result, 1);
+```
 
 ## Contributing
 
