@@ -26,11 +26,17 @@
     "semiColons": true
   },
   "tasks": {
+    // Format and check formatting
     "fmt": "deno fmt && deno fmt --check",
+    // Lint and check linting
     "lint": "deno lint",
+    // Test and generate coverage
     "test": "deno test --allow-all --doc --trace-leaks",
+    // Generate documentation
     "docs": "deno doc --html --name=@kz/common-types ./mod.ts",
+    // Check if the package is ready to be published
     "jsr:check": "deno publish --dry-run --allow-dirty",
+    // Run all pre-commit tasks
     "pre-commit": "deno task docs && deno task lint && deno task fmt && deno task jsr:check"
   },
   "imports": {
@@ -49,12 +55,12 @@
       "README.md",
       "LICENSE",
       "mod.ts",
-      "src/**/*.ts",
+      "**/*.ts",
       "deno.jsonc",
       "deno.lock"
     ],
     "exclude": [
-      "src/**/*.test.ts"
+      "**/*.test.ts"
     ]
   }
 }
