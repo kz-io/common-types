@@ -646,9 +646,295 @@ export type Func<
  *
  * @example
  * ```ts
- * import type { Bit } from './type_aliases.ts';
+ * import type { BitValue } from './type_aliases.ts';
  *
- * const bit: Bit = 1;
+ * const bit: BitValue = 1;
  * ```
  */
-export type Bit = 0 | 1;
+export type BitValue = 0 | 1;
+
+/**
+ * Returns a boolean value whether a type `T` is `any`.
+ *
+ * @template T The type to check.
+ *
+ * @example
+ * ```ts
+ * import type { IsAny } from './type_aliases.ts';
+ *
+ * const isAny: IsAny<any> = true;
+ * ```
+ */
+export type IsAny<T> = unknown extends T ? [keyof T] extends [never] ? false
+  : true
+  : false;
+
+/**
+ * Describes the keys of an `AnyObject`.
+ *
+ * This is similar to the `Scalar` type but is tolerant to the `keyofStringsOnly` rule.
+ *
+ * @example
+ * ```ts
+ * import type { KeyOfAny } from './type_aliases.ts';
+ *
+ * const key: KeyOfAny = 'name';
+ * ```
+ */
+export type KeyOfAny = keyof AnyObject;
+
+/**
+ * Describes a `null` or `undefined` value.
+ *
+ * @example
+ * ```ts
+ * import type { Nil } from './type_aliases.ts';
+ *
+ * const nil: Nil = null;
+ * ```
+ */
+export type Nil = null | undefined;
+
+/**
+ * A type representing a primitive value.
+ *
+ * @example
+ * ```ts
+ * import type { Primitive } from './type_aliases.ts';
+ *
+ * const primitive: Primitive = 42;
+ * const nil: Primitive = null;
+ * ```
+ */
+export type Primitive = Scalar | Nil;
+
+/**
+ * Describes native JavaScript types.
+ *
+ * @example
+ * ```ts
+ * import type { Native } from './type_aliases.ts';
+ *
+ * const native: Native = 42;
+ * const date: Native = new Date();
+ * ```
+ */
+// deno-lint-ignore ban-types
+export type Native = Primitive | Function | Date | RegExp | Error;
+
+/**
+ * A utility type that flattens types improving readability.
+ *
+ * @template T The type to flatten.
+ *
+ * @example //TODO(ebntly): Add an example
+ */
+export type Clean<T> =
+  & T
+  & {
+    [P in keyof T]: T[P];
+  };
+
+/**
+ * Describes a record with required properties.
+ *
+ * @template T The value type of the record.
+ * @template K The required keys.
+ *
+ * @example
+ * ```ts
+ * import type { StrictRecord } from './type_aliases.ts';
+ *
+ * const record: StrictRecord<string, 'name' | 'age'> = {
+ *  name: 'Dakota Cortez',
+ *  age: '25'
+ * };
+ */
+export type StrictRecord<T, K extends KeyOfAny = string> = { [key in K]: T };
+
+/**
+ * Describes a record with optional properties.
+ *
+ * @template T The value type of the record.
+ * @template K The optional keys.
+ *
+ * @example
+ * ```ts
+ * import type { LooseRecord } from './type_aliases.ts';
+ *
+ * const record: LooseRecord<string, 'name' | 'age'> = {
+ *  name: 'Dakota Cortez'
+ * };
+ */
+export type LooseRecord<T, K extends KeyOfAny = string> = { [key in K]?: T };
+
+/**
+ * Describes a value that may be a promise or a synchronous value.
+ *
+ * @template T The type of the value.
+ *
+ * @example
+ * ```ts
+ * import type { MaybeAsync } from './type_aliases.ts';
+ *
+ * const value: MaybeAsync<number> = 42;
+ * const promise: MaybeAsync<number> = Promise.resolve(42);
+ * ```
+ */
+export type MaybeAsync<T> = T | Promise<T>;
+
+/**
+ * An alias for `MaybeAsync`.
+ */
+export type MaybeSync<T> = MaybeAsync<T>;
+
+/**
+ * Extracts the type of a `MaybeAsync` value.
+ *
+ * @template T The `MaybeAsync` type.
+ *
+ * @example
+ * ```ts
+ * import type { MaybeAsyncType } from './type_aliases.ts';
+ *
+ * type MyValue = MaybeAsync<number>;
+ *
+ * const value: MaybeAsyncType<MyValue> = 42;
+ * ```
+ */
+export type MaybeAsyncType<T> = T extends MaybeAsync<infer U> ? U : never;
+
+/**
+ * An alias for `MaybeAsyncType`.
+ */
+export type MaybeSyncType<T> = MaybeAsyncType<T>;
+
+/**
+ * Describes a value that can be any type of array..
+ *
+ * @template T The array's element type.
+ *
+ * @example
+ * ```ts
+ * import type { AnyArray } from './type_aliases.ts';
+ *
+ * const array: AnyArray<number> = [1, 2, 3];
+ *
+ * array.push(4);
+ * ```
+ */
+export type AnyArray<T = unknown> = Array<T> | ReadonlyArray<T>;
+
+/**
+ * Describes a value that can be a single value or an array of values.
+ *
+ * @template T The value type.
+ *
+ * @example
+ * ```ts
+ * import type { OneOrMany } from './type_aliases.ts';
+ *
+ * const single: OneOrMany<number> = 42;
+ * const many: OneOrMany<number> = [1, 2, 3];
+ * ```
+ */
+export type OneOrMany<T> = T | AnyArray<T>;
+
+/**
+ * Extracts the paths of an object.
+ *
+ * @template T - The object type.
+ * @template K - The key type.
+ */
+type ExtractPath<T extends AnyObject, K extends keyof T> = K extends string
+  ? IsAny<Required<T>[K]> extends true ? K : Required<T>[K] extends AnyObject ?
+      | `${K}.${
+        & ExtractPath<
+          Required<T>[K],
+          Exclude<keyof Required<T>[K], keyof []>
+        >
+        & string}`
+      | `${K}.${Exclude<keyof Required<T>[K], keyof []> & string}`
+  : K
+  : K;
+
+/**
+ * The internal string path type.
+ *
+ * @template T - The object type.
+ */
+type InternalStringPath<T extends AnyObject> =
+  | ExtractPath<T, keyof T>
+  | keyof T;
+
+/**
+ * Extracts the string paths of an object.
+ *
+ * @template T - The object type.
+ *
+ * @example
+ * ```ts
+ * import type { ObjectPaths } from './type_aliases.ts';
+ *
+ * type MyObject = {
+ *   a: {
+ *     b: {
+ *       c: string;
+ *       d: number;
+ *       e: boolean;
+ *       f?: {
+ *         g: string;
+ *       };
+ *     };
+ *   };
+ * };
+ *
+ * const toC: Paths<MyObject> = 'a.b.c';
+ * const toD: Paths<MyObject> = 'a.b.d';
+ * const toE: Paths<MyObject> = 'a.b.e';
+ * const toF: Paths<MyObject> = 'a.b.f';
+ * const toG: Paths<MyObject> = 'a.b.f.g';
+ * ```
+ */
+
+export type Paths<T extends AnyObject> = keyof T extends string
+  ? InternalStringPath<T> extends infer P ? P extends string | keyof T ? P
+    : keyof T
+  : keyof T
+  : never;
+/**
+ * The value at a specified object path.
+ *
+ * @template T - The object type.
+ * @template P - The object path.
+ *
+ * @example
+ * ```ts
+ * import type { PathValue } from './type_aliases.ts';
+ *
+ * type MyObject = {
+ *   a: {
+ *     b: {
+ *       c: string;
+ *       d: number;
+ *       e: boolean;
+ *       f?: {
+ *         g: string;
+ *       };
+ *     };
+ *   };
+ * };
+ *
+ * const valueAtD: PathValue<MyObject, 'a.b.d'> = 42;
+ * ```
+ */
+export type PathValue<
+  T extends AnyObject = AnyObject,
+  P extends Paths<T> = Paths<T>,
+> = P extends `${infer K}.${infer R}`
+  ? K extends keyof T
+    ? R extends Paths<Required<T>[K]> ? PathValue<Required<T>[K], R>
+    : never
+  : never
+  : P extends keyof Required<T> ? Required<T>[P]
+  : never;
