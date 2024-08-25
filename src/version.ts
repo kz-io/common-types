@@ -6,4 +6,4 @@
 /**
  * Version of the module.
  */
-export const VERSION = '0.0.6';
+export const VERSION = '0.0.7';
