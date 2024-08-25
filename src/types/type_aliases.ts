@@ -795,7 +795,7 @@ export type MaybeSync<T> = MaybeAsync<T>;
  *
  * @example
  * ```ts
- * import type { MaybeAsyncType } from './type_aliases.ts';
+ * import type { MaybeAsync, MaybeAsyncType } from './type_aliases.ts';
  *
  * type MyValue = MaybeAsync<number>;
  *
@@ -819,8 +819,6 @@ export type MaybeSyncType<T> = MaybeAsyncType<T>;
  * import type { AnyArray } from './type_aliases.ts';
  *
  * const array: AnyArray<number> = [1, 2, 3];
- *
- * array.push(4);
  * ```
  */
 export type AnyArray<T = unknown> = Array<T> | ReadonlyArray<T>;
@@ -874,7 +872,7 @@ type InternalStringPath<T extends AnyObject> =
  *
  * @example
  * ```ts
- * import type { ObjectPaths } from './type_aliases.ts';
+ * import type { Paths } from './type_aliases.ts';
  *
  * type MyObject = {
  *   a: {

@@ -37,7 +37,7 @@
     // Check if the package is ready to be published
     "jsr:check": "deno publish --dry-run --allow-dirty",
     // Run all pre-commit tasks
-    "pre-commit": "deno task docs && deno task lint && deno task fmt && deno task jsr:check"
+    "pre-commit": "deno task test && deno task docs && deno task lint && deno task fmt && deno task jsr:check"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@^0.221.0",
