@@ -4,6 +4,7 @@
  */
 
 import { ComparisonResult } from './enums.ts';
+
 import type { TComparer, TConverter } from './interfaces.ts';
 
 /**
@@ -17,6 +18,7 @@ import type { TComparer, TConverter } from './interfaces.ts';
  *
  * key = 25;
  * key = Symbol('my-key');
+ * key = 'another-key';
  * ```
  */
 export type KeyPrimitive = string | number | symbol;
@@ -155,7 +157,27 @@ export type Scalar = boolean | bigint | KeyPrimitive;
  * value = 42;
  * ```
  */
-export type Defined<T> = T extends undefined ? never : T;
+export type MaybeDefined<T> = T extends undefined ? never : T;
+
+/**
+ * Describes a type that if defined, is of type `T`, otherwise is `never`.
+ *
+ * **NOTE:** This type is deprecated to align with naming conventions. Use {@link MaybeDefined} instead.
+ *
+ * @deprecated Use {@link MaybeDefined} instead.
+ *
+ * @template T The type of the value if defined.
+ *
+ * @example
+ * ```ts
+ * import type { Defined } from './type_aliases.ts';
+ *
+ * let value: Defined<number>;
+ *
+ * value = 42;
+ * ```
+ */
+export type Defined<T> = MaybeDefined<T>;
 
 /**
  * Describes a function that converts a value from one type to another.
@@ -746,9 +768,10 @@ export type Clean<T> =
  * import type { StrictRecord } from './type_aliases.ts';
  *
  * const record: StrictRecord<string, 'name' | 'age'> = {
- *  name: 'Dakota Cortez',
- *  age: '25'
+ *   name: 'Dakota Cortez',
+ *   age: '25'
  * };
+ * ```
  */
 export type StrictRecord<T, K extends KeyOfAny = string> = { [key in K]: T };
 
@@ -763,8 +786,9 @@ export type StrictRecord<T, K extends KeyOfAny = string> = { [key in K]: T };
  * import type { LooseRecord } from './type_aliases.ts';
  *
  * const record: LooseRecord<string, 'name' | 'age'> = {
- *  name: 'Dakota Cortez'
+ *   name: 'Dakota Cortez'
  * };
+ * ```
  */
 export type LooseRecord<T, K extends KeyOfAny = string> = { [key in K]?: T };
 
@@ -936,3 +960,145 @@ export type PathValue<
   : never
   : P extends keyof Required<T> ? Required<T>[P]
   : never;
+
+/**
+ * Describe a predicate function that takes a value, key, and object.
+ *
+ * @template T - The object type.
+ * @template K - The key/index type.
+ * @template V - The value/element type.
+ *
+ * @example
+ * ```ts
+ * import type { PredicateAction } from './type_aliases.ts';
+ *
+ * const obj = {
+ *   name: 'Sarai',
+ *   age: 25,
+ * };
+ *
+ * const action: PredicateAction<typeof obj> = (value, key, obj) => {
+ *   console.log(`The value of ${key} is ${value}`);
+ * };
+ *
+ * Object.entries(obj).forEach(([key, value]) => action(value, key as keyof typeof obj, obj));
+ * // Output:
+ * // The value of name is Sarai
+ * // The value of age is 25
+ * ```
+ */
+export type PredicateAction<
+  T extends AnyObject | AnyArray<unknown>,
+  K extends keyof T = keyof T,
+  V extends T[K] = T[K],
+> = (element: V, key: K, obj: T) => void;
+
+/**
+ * Describe a predicate function that takes a value, key, and object and returns a result.
+ *
+ * @template R - The result type.
+ * @template T - The object type.
+ * @template K - The key/index type.
+ * @template V - The value/element type.
+ *
+ * @example
+ * ```ts
+ * import type { PredicateFunc } from './type_aliases.ts';
+ *
+ * const obj = {
+ *   name: 'Sarai',
+ *   age: 25,
+ * };
+ *
+ * const func: PredicateFunc<string, typeof obj> = (value, key, obj) => {
+ *   return `The value of ${key} is ${value}`;
+ * };
+ *
+ * const results = Object.entries(obj).map(([key, value]) => func(value, key as keyof typeof obj, obj));
+ *
+ * console.log(results);
+ * // Output:
+ * // ['The value of name is Sarai', 'The value of age is 25']
+ * ```
+ */
+export type PredicateFunc<
+  R,
+  T extends AnyObject | AnyArray<unknown>,
+  K extends keyof T = keyof T,
+  V extends T[K] = T[K],
+> = (element: V, key: K, obj: T) => R;
+
+/**
+ * Describe a reducer function that takes a value, a key, and an object.
+ *
+ * @template T - The object type.
+ * @template K - The key/index type.
+ * @template V - The value/element type.
+ *
+ * @example
+ * ```ts
+ * import type { ReducerAction } from './type_aliases.ts';
+ *
+ * const obj = {
+ *   name: 'Sarai',
+ *   age: 25,
+ * };
+ *
+ * const action: ReducerAction<typeof obj> = (accumulator, value, key, obj) => {
+ *
+ * };
+ *
+ * const total = Object.entries(obj).reduce((acc, [key, value]) => action(acc, value, key, obj), 0);
+ *
+ * console.log(total);
+ * // Output: 25
+ */
+export type UpdatingReducerAction<
+  T extends AnyObject | AnyArray<unknown>,
+  K extends keyof T = keyof T,
+  V extends T[K] = T[K],
+> = (accumulator: T, element: V, key: K, obj: T) => T;
+
+/**
+ * Describe a reducer function that takes an accumulator, a value, a key, and an object.
+ *
+ * @template T - The object type.
+ * @template K - The key/index type.
+ * @template V - The value/element type.
+ */
+export type AccumulatingReducerAction<
+  A,
+  T extends AnyObject | AnyArray<unknown>,
+  K extends keyof T = keyof T,
+  V extends T[K] = T[K],
+> = (accumulator: A, element: V, key: K, obj: T) => A;
+
+/**
+ * An alias for `UpdatingReducerAction` or `AccumulatingReducerAction`.
+ *
+ * @template T - The object type.
+ * @template A - The accumulator type.
+ *
+ * @example
+ * ```ts
+ * import type { ReducerAction } from './type_aliases.ts';
+ *
+ * const obj = {
+ *   name: 'Sarai',
+ *   age: 25,
+ * };
+ *
+ * const action: ReducerAction<typeof obj, string[]> = (acc, value, key, obj) => {
+ *   acc.push(`${key}=${value}`);
+ *
+ *   return acc;
+ * };
+ *
+ * const total = Object.entries(obj).reduce((acc, [key, value]) => action(acc, value, key as keyof typeof obj, obj), [] as string[]);
+ *
+ * console.log(total.join(','));
+ * // Output: 'name=Sarai,age=25'
+ * ```
+ */
+export type ReducerAction<T extends AnyObject | AnyArray<unknown>, A = T> =
+  A extends T ? UpdatingReducerAction<T> : AccumulatingReducerAction<A, T>;
