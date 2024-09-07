@@ -24,7 +24,7 @@ import type { TComparer, TConverter } from './interfaces.ts';
 export type KeyPrimitive = string | number | symbol;
 
 /**
- * Describes an object with a `KeyPrimitive` property key and unknown (indeterminate) value.
+ * Describes an object with {@link KeyPrimitive} property keys and unknown (indeterminate) value.
  *
  * @example
  * ```ts
@@ -40,7 +40,7 @@ export type KeyPrimitive = string | number | symbol;
 export type IndeterminateObject = Record<KeyPrimitive, unknown>;
 
 /**
- * Describes an object that has any property values keyed by `KeyPrimitive` values.
+ * Describes an object that has any property values keyed by {@link KeyPrimitive} values.
  *
  * @example
  * ```ts
@@ -268,7 +268,7 @@ export type Converter<F, T> = TConverter<F, T> | ConverterFn<F, T>;
 export type Constructor<T> = new (...args: any[]) => T;
 
 /**
- * Describes a function comparing two values and returning a ComparisonResult.
+ * Describes a function comparing two values and returning a {@link ComparisonResult}.
  *
  * @template T - The types of values this comparer can operate on.
  *
@@ -618,7 +618,7 @@ export type Action<
   : never;
 
 /**
- * Describes a function that accepts a set of arguments and, if provided, options, returning the specified type.
+ * Describes a function that accepts a set of arguments, `T`, and, options (`O`) if provided, returning a value of type `R`.
  *
  * This type is used to restrict callbacks or handlers to integereleven guidelines for functions.
  * It is used with the {@link Empty}, {@link Single}, and {@link Couple} types to define the arguments.
@@ -692,9 +692,9 @@ export type IsAny<T> = unknown extends T ? [keyof T] extends [never] ? false
   : false;
 
 /**
- * Describes the keys of an `AnyObject`.
+ * Describes the keys of an {@link AnyObject}.
  *
- * This is similar to the `Scalar` type but is tolerant to the `keyofStringsOnly` rule.
+ * This is similar to the {@link Scalar} type but is tolerant to the `keyofStringsOnly` rule.
  *
  * @example
  * ```ts
@@ -808,14 +808,14 @@ export type LooseRecord<T, K extends KeyOfAny = string> = { [key in K]?: T };
 export type MaybeAsync<T> = T | Promise<T>;
 
 /**
- * An alias for `MaybeAsync`.
+ * An alias for {@link MaybeAsync}.
  */
 export type MaybeSync<T> = MaybeAsync<T>;
 
 /**
- * Extracts the type of a `MaybeAsync` value.
+ * Extracts the type of a {@link MaybeAsync} value.
  *
- * @template T The `MaybeAsync` type.
+ * @template T The {@link MaybeAsync} type.
  *
  * @example
  * ```ts
@@ -829,7 +829,7 @@ export type MaybeSync<T> = MaybeAsync<T>;
 export type MaybeAsyncType<T> = T extends MaybeAsync<infer U> ? U : never;
 
 /**
- * An alias for `MaybeAsyncType`.
+ * An alias for {@link MaybeAsyncType}.
  */
 export type MaybeSyncType<T> = MaybeAsyncType<T>;
 
@@ -1074,7 +1074,7 @@ export type AccumulatingReducerAction<
 > = (accumulator: A, element: V, key: K, obj: T) => A;
 
 /**
- * An alias for `UpdatingReducerAction` or `AccumulatingReducerAction`.
+ * An alias for {@link UpdatingReducerAction} or {@link AccumulatingReducerAction}.
  *
  * @template T - The object type.
  * @template A - The accumulator type.

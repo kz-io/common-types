@@ -19,6 +19,7 @@ export type {
 } from './interfaces.ts';
 
 export type {
+  AccumulatingReducerAction,
   Action,
   AnyArray,
   AnyObject,
@@ -42,6 +43,7 @@ export type {
   LooseRecord,
   MaybeAsync,
   MaybeAsyncType,
+  MaybeDefined,
   MaybeSync,
   MaybeSyncType,
   Native,
@@ -49,8 +51,11 @@ export type {
   OneOrMany,
   Paths,
   PathValue,
+  PredicateAction,
+  PredicateFunc,
   Primitive,
   Quadruple,
+  ReducerAction,
   Scalar,
   Single,
   SoftwareOperation,
@@ -58,4 +63,5 @@ export type {
   SystemArchitecture,
   SystemOS,
   Triple,
+  UpdatingReducerAction,
 } from './type_aliases.ts';
