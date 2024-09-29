@@ -574,15 +574,15 @@ export type Dyadic<T1, T2 = T1> = Binary<T1, T2>;
  * function doMath(items: ItemTypes): number {
  * 	 if (!items.length) return 0;
  * 	 if (items.length === 1) return items[0];
- * 
+ *
  * 	 const [op1, op2, op] = items;
- * 
+ *
  * 	 if (op === 'add') return op1 + op2;
  * 	 if (op === 'sub') return op1 - op2;
  * 	 if (op === 'div') return op1 / op2;
  * 	 if (op === 'mx') return op1 * op2;
  * 	 if (op === 'pow') return Math.pow(op1, op2);
- * 
+ *
  * 	 return op1 % op2;
  * }
  *
@@ -1017,15 +1017,15 @@ export type MaybePromise<T> = T | Promise<T>;
  * function doMath(items: ItemTypes): number {
  * 	 if (!items.length) return 0;
  * 	 if (items.length === 1) return items[0];
- * 
+ *
  * 	 const [op1, op2, op] = items;
- * 
+ *
  * 	 if (op === 'add') return op1 + op2;
  * 	 if (op === 'sub') return op1 - op2;
  * 	 if (op === 'div') return op1 / op2;
  * 	 if (op === 'mx') return op1 * op2;
  * 	 if (op === 'pow') return Math.pow(op1, op2);
- * 
+ *
  * 	 return op1 % op2;
  * }
  *
@@ -1125,15 +1125,15 @@ export type Nilable<T> = T | Nil;
  * function doMath(items: ItemTypes): number {
  * 	 if (!items.length) return 0;
  * 	 if (items.length === 1) return items[0];
- * 
+ *
  * 	 const [op1, op2, op] = items;
- * 
+ *
  * 	 if (op === 'add') return op1 + op2;
  * 	 if (op === 'sub') return op1 - op2;
  * 	 if (op === 'div') return op1 / op2;
  * 	 if (op === 'mx') return op1 * op2;
  * 	 if (op === 'pow') return Math.pow(op1, op2);
- * 
+ *
  * 	 return op1 % op2;
  * }
  *
@@ -1211,15 +1211,15 @@ export type Nullable<T> = T | null;
  * function doMath(items: ItemTypes): number {
  * 	 if (!items.length) return 0;
  * 	 if (items.length === 1) return items[0];
- * 
+ *
  * 	 const [op1, op2, op] = items;
- * 
+ *
  * 	 if (op === 'add') return op1 + op2;
  * 	 if (op === 'sub') return op1 - op2;
  * 	 if (op === 'div') return op1 / op2;
  * 	 if (op === 'mx') return op1 * op2;
  * 	 if (op === 'pow') return Math.pow(op1, op2);
- * 
+ *
  * 	 return op1 % op2;
  * }
  *
@@ -2354,15 +2354,15 @@ export type Sextuple<T1, T2 = T1, T3 = T2, T4 = T3, T5 = T4, T6 = T5> = Senary<
  * function doMath(items: ItemTypes): number {
  * 	 if (!items.length) return 0;
  * 	 if (items.length === 1) return items[0];
- * 
+ *
  * 	 const [op1, op2, op] = items;
- * 
+ *
  * 	 if (op === 'add') return op1 + op2;
  * 	 if (op === 'sub') return op1 - op2;
  * 	 if (op === 'div') return op1 / op2;
  * 	 if (op === 'mx') return op1 * op2;
  * 	 if (op === 'pow') return Math.pow(op1, op2);
- * 
+ *
  * 	 return op1 % op2;
  * }
  *
@@ -2414,15 +2414,15 @@ export type Single<T> = Unary<T>;
  * function doMath(items: ItemTypes): number {
  * 	 if (!items.length) return 0;
  * 	 if (items.length === 1) return items[0];
- * 
+ *
  * 	 const [op1, op2, op] = items;
- * 
+ *
  * 	 if (op === 'add') return op1 + op2;
  * 	 if (op === 'sub') return op1 - op2;
  * 	 if (op === 'div') return op1 / op2;
  * 	 if (op === 'mx') return op1 * op2;
  * 	 if (op === 'pow') return Math.pow(op1, op2);
- * 
+ *
  * 	 return op1 % op2;
  * }
  *
@@ -2713,15 +2713,15 @@ export type Triple<T1, T2 = T1, T3 = T2> = Ternary<T1, T2, T3>;
  * function doMath(items: ItemTypes): number {
  * 	 if (!items.length) return 0;
  * 	 if (items.length === 1) return items[0];
- * 
+ *
  * 	 const [op1, op2, op] = items;
- * 
+ *
  * 	 if (op === 'add') return op1 + op2;
  * 	 if (op === 'sub') return op1 - op2;
  * 	 if (op === 'div') return op1 / op2;
  * 	 if (op === 'mx') return op1 * op2;
  * 	 if (op === 'pow') return Math.pow(op1, op2);
- * 
+ *
  * 	 return op1 % op2;
  * }
  *
