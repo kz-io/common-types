@@ -5,454 +5,655 @@
 
 import { ComparisonResult } from './enums.ts';
 
-import type { Comparer, Converter } from './type_aliases.ts';
+import type { AnyObject, Comparer, Converter } from './type_aliases.ts';
 
 /**
- * Provides a consistent property providing a URL to help resources.
+ * An `IHashable` is an interface that provides a method for retrieving a
+ * non-cryptographic hash corresponding to the value of the implementing type.
  *
- * @example
+ * The `IHashable` interface defines the {@link IHashable.getHashCode} method, which is used to
+ * generate a numeric value corresponding to the implementing type's value.
+ * This number (hash) is not intended to be cryptographically secure, and
+ * should not be used as such.
+ *
+ * > For the purpose of uniqueness, it is recommended to use at least one
+ * > instance property for input in the resulting hash. Hash codes should not
+ * > use constants or static property values in hash generation.
+ *
+ * @example Example usage of the `IHashable` interface.
  * ```ts
- * import { assertEquals } from '@std/assert';
+ * import type { IHashable } from './interfaces.ts';
+ *
+ * class User implements IHashable {
+ *   constructor(private name: string, private age: number) {}
+ *
+ *   #createHash(): number {
+ *     const string = `${this.name}:${this.age}`;
+ *
+ *     return string.split('').reduce((acc, char) =>
+ *       ((acc << 5) - acc + char.charCodeAt(0)) | 0
+ *     , 0);
+ *   }
+ *
+ *   getHashCode(): number {
+ *     return this.#createHash();
+ *   }
+ * }
+ *
+ * const hashable = new User('Sidor', 80);
+ *
+ * console.assert(hashable.getHashCode() === 291855361); // ✔
+ * ```
+ */
+export interface IHashable {
+  /**
+   * Returns the hash for this instance.
+   */
+  getHashCode(): number;
+}
+
+/**
+ * An `IHelpful` is an interface that provides a property containing the
+ * location of a help file for the implementing type.
+ *
+ * The `IHelpful` interface defines the {@link helpUrl} property, which
+ * contains the location of a help file containing information about the
+ * implementing type.
+ *
+ * Though the interface permits implementations allowing updating of the
+ * {@link helpUrl} property, it is recommended to be a getter property
+ * effectively returning a computed read-only value. It is also recommended the
+ * value of the {@link helpUrl} property be based only on the initial state of
+ * the implementing type. The value of the {@link helpUrl} property should not
+ * change after instantiation and should not be affected by changes to
+ * properties on the instance.
+ *
+ * @example Example usage of the `IHelpful` interface.
+ * ```ts
  * import type { IHelpful } from './interfaces.ts';
  *
- * const helpfulObject: IHelpful = {
- * 	 helpUrl: 'https://example.integereleven.com',
- * };
+ * class ServiceDesk implements IHelpful {
+ *   helpUrl: string = 'https://example.com/help/';
+ * }
  *
- * const expected = 'http://example.integereleven.com';
+ * const helpful = new ServiceDesk();
  *
- * assertEquals(helpfulObject.helpUrl, expected);
+ * console.assert(helpful.helpUrl === 'https://example.com/help/'); // ✔
+ * ```
+ *
+ * @example Example usage of the `IHelpful` interface with a computed property.
+ * ```ts
+ * import type { IHelpful } from './interfaces.ts';
+ *
+ * class ServiceDesk implements IHelpful {
+ *   constructor(private name: string) {}
+ *
+ *   get helpUrl(): string {
+ *     return `https://example.com/help/${this.name}`;
+ *   }
+ * }
+ *
+ * const helpful = new ServiceDesk('ProductSupport');
+ *
+ * console.assert(helpful.helpUrl === 'https://example.com/help/ProductSupport'); // ✔
  * ```
  */
 export interface IHelpful {
   /**
-   * The URL to the help resource.
+   * The help file associated with this instance.
    */
   helpUrl: string;
 }
 
 /**
- * Provides a method returning instance data hashed into a number.
+ * An `IVersionDescriptor` is an interface describing a structured SemVer
+ * compatible version.
  *
- * This interface is not meant to provide cryptographically secure hashing, but instead for
- * providing a unique value representing the data of an object.
+ * The `IVersionDescriptor` interface provides properties describing the
+ * identifiers of a SemVer version.
  *
- * @example
+ * @example Example usage of the `IVersionDescriptor` interface.
  * ```ts
- * import { assertEquals } from '@std/assert';
- * import type { IHashable } from './interfaces.ts';
+ * import type { IVersionDescriptor } from './interfaces.ts';
  *
- * class MyClass implements IHashable {
- *   constructor(
- *     protected name: string,
- *     protected age: number,
- *   ) {}
+ * const version: IVersionDescriptor = {
+ *   major: 1,
+ *   minor: 2,
+ *   patch: 3,
+ * };
  *
- *   protected hashData(): number {
- *     const { name, age } = this;
- *     const object = { name, age };
- *     const json = JSON.stringify(object);
- *     const chars = [...json];
- *
- *     const hash = chars.reduce((acc, char) => {
- *       const code = char.charCodeAt(0);
- *       return ((acc << 5) - acc) + code;
- *     }, 0);
- *
- *     return hash;
- *   }
- *
- *   public getHash(): number {
- *     return this.hashData();
- *   }
- * }
- *
- * const instance = new MyClass('Alice', 30);
- *
- * assertEquals(instance.getHash(), 89027321);
+ * console.assert(version.major === 1); // ✔
+ * console.assert(version.minor === 2); // ✔
+ * console.assert(version.patch === 3); // ✔
  * ```
+ *
+ * @example Example usage of the `IVersionDescriptor` interface with the `preRelease` property.
+ * ```ts
+ * import type { IVersionDescriptor } from './interfaces.ts';
+ *
+ * const version1: IVersionDescriptor = {
+ *   major: 1,
+ *   minor: 2,
+ *   patch: 3,
+ *   preRelease: 'alpha',
+ * };
+ *
+ * const version2: IVersionDescriptor = {
+ *   major: 1,
+ *   minor: 2,
+ *   patch: 3,
+ * };
+ *
+ * console.assert(version1.major === 1);              // ✔
+ * console.assert(version1.minor === 2);              // ✔
+ * console.assert(version1.patch === 3);              // ✔
+ * console.assert(version1.preRelease === 'alpha');   // ✔
+ *
+ * console.assert(version2.major === 1);              // ✔
+ * console.assert(version2.minor === 2);              // ✔
+ * console.assert(version2.patch === 3);              // ✔
+ * console.assert(version2.preRelease === undefined); // ✔
+ * ```
+ *
+ * @example Example usage of the `IVersionDescriptor` interface with the `build` property.
+ * ```ts
+ * import type { IVersionDescriptor } from './interfaces.ts';
+ *
+ * const version1: IVersionDescriptor = {
+ *   major: 1,
+ *   minor: 2,
+ *   patch: 3,
+ *   build: 'build-1',
+ * };
+ *
+ * const version2: IVersionDescriptor = {
+ *   major: 1,
+ *   minor: 2,
+ *   patch: 3,
+ * };
+ *
+ * console.assert(version1.major === 1);              // ✔
+ * console.assert(version1.minor === 2);              // ✔
+ * console.assert(version1.patch === 3);              // ✔
+ * console.assert(version2.preRelease === undefined); // ✔
+ * console.assert(version1.build === 'build-1');      // ✔
+ *
+ * console.assert(version2.major === 1);              // ✔
+ * console.assert(version2.minor === 2);              // ✔
+ * console.assert(version2.patch === 3);              // ✔
+ * console.assert(version2.preRelease === undefined); // ✔
+ * console.assert(version2.build === undefined);      // ✔
+ * ```
+ *
+ * @see https://semver.org
  */
-export interface IHashable {
+export interface IVersionDescriptor {
   /**
-   * Return the hash of the object’s current value.
+   * The major version identifier of the version.
    */
-  getHash(): number;
+  major: number;
+
+  /**
+   * The minor version identifier of the version.
+   */
+  minor: number;
+
+  /**
+   * The patch version identifier of the version.
+   */
+  patch: number;
+
+  /**
+   * The pre-release version identifier of the version.
+   */
+  preRelease?: string;
+
+  /**
+   * The build metadata of the version.
+   */
+  build?: string;
 }
 
 /**
- * Provides a mechanism for an instance to clone itself.
+ * A `TBase` is an interface providing implementing types base methods to
+ * convert their value to more specific types.
  *
- * @template T - The type of object to clone. This is for utility and should always be the same as the implementing class.
+ * The `TBase` interface is used across most classes in the kz modules as a
+ * base for getting the value of an implementing type, as well as the string
+ * and numerical representation of its value. It provides the native methods
+ * of {@link [Symbol.toPrimitive]}, `{@link toString}, and {@link valueOf}.
  *
- * @example
- * ```ts
- * import { assertEquals } from '@std/assert';
- * import type { TCloneable } from './interfaces.ts';
+ * @template T The type of the implementing type's value.
  *
- * class User implements TCloneable<User> {
- *   constructor(public name: string, public age: number) {}
- *
- *   public clone(): User {
- *     return new User(this.name, this.age);
- *   }
- * }
- *
- * const instance = new User('Alice', 30);
- * const clone = instance.clone();
- *
- * assertEquals(clone.name, instance.name);
- * assertEquals(clone.age, instance.age);
- * ```
- */
-export interface TCloneable<T> {
-  /**
-   * Returns a cloned version of the instance.
-   */
-  clone(): T;
-}
-
-/**
- * Describes a base kz object.
- *
- * @template T - The type of the object's value.
- *
- * @example
+ * @example Example usage of the `TBase` interface.
  * ```ts
  * import type { TBase } from './interfaces.ts';
  *
- * const obj: TBase<number> = {
- * 	 [Symbol.toPrimitive](hint: string): string | number {
- * 	 	 if (hint === 'number') {
- * 	 	 	 return this.valueOf();
- * 	 	 }
+ * class Currency implements TBase<number> {
+ *   constructor(private value: number, private sym: string) {}
  *
- * 	 	 return this.toString();
- * 	 },
- * 	 toString() {
- * 	 	 return `${this.valueOf()}`;
- * 	 },
- * 	 valueOf() {
- * 	 	 return 42;
- * 	 },
- * };
+ *   [Symbol.toPrimitive](hint: string): string | number {
+ *     if (hint === 'number') return this.valueOf();
  *
- * const numValue = +obj;
- * const strValue = `${obj}`;
- * const tValue = obj.valueOf();
+ *     return this.toString();
+ *   }
+ *
+ *   toString(): string {
+ *     return `${this.value} ${this.sym}`;
+ *   }
+ *
+ *   valueOf(): number {
+ *     return this.value;
+ *   }
+ * }
+ *
+ * const value = new Currency(42, 'USD');
+ *
+ * console.assert(value[Symbol.toPrimitive]('string') === '42 USD'); // ✔
+ * console.assert(value[Symbol.toPrimitive]('number') === 42);       // ✔
+ * console.assert(value.toString() === '42 USD');                    // ✔
+ * console.assert(value.valueOf() === 42);
  * ```
  */
 export interface TBase<T> {
   /**
-   * Returns a primitive value representing the object’s value, either a `string` or `number`, depending on the hint.
+   * Returns the string or numerical representation of the implementing type's
+   * value.
    *
-   * @param hint The type of primitive value to return.
-   * @returns A `string` if hint is `'string'` or `'default'`, otherwise a `number`.
+   * Returns a `string` if `hint` is `"string"`, a `number` if `hint` is
+   * `"number"`. Handling of the `"default"` `hint` is left up to
+   * implementers.
+   *
+   * @param hint A hint for the expected value type to return.
    */
   [Symbol.toPrimitive](hint: string): string | number;
 
   /**
-   * Returns the string representation of the object.
+   * Returns a string representation of the implementing type's value.
    */
   toString(): string;
 
   /**
-   * Returns the T value representation of the object.
+   * Returns the value of the implementing type.
    */
   valueOf(): T;
 }
 
 /**
- * Provides a method to convert a value from one type to another.
+ * A `TCloneable` is an interface providing implementing types a method to
+ * clone themselves.
  *
- * @template F - The type to convert from.
- * @template T - The type to convert to.
+ * The `TCloneable` interface provides the {@link clone} method which clones
+ * the implementing type into a new instance of the same type and value.
  *
- * @example
+ * @template T The implementing type. Provided for utility.
+ *
+ * @example Example usage of the `TCloneable` interface.
  * ```ts
- * import { assertEquals, assertInstanceOf } from '@std/assert';
- * import type { TConverter } from './interfaces.ts';
+ * import type { TCloneable } from './interfaces.ts';
  *
- * const converter: TConverter<string, number> = {
- * 	 convert(value: string): number {
- * 	 	 return parseInt(value);
- * 	 },
- * };
+ * class User implements TCloneable<User> {
+ *   constructor(public name: string, public age: number) {}
  *
- * const result = converter.convert('42');
- *
- * assertEquals(result, 42);
- * ```
- */
-export interface TConverter<F, T> {
-  /**
-   * Converts a value from one type to another.
-   *
-   * @param value - The value to convert.
-   */
-  convert(value: F): T;
-}
-
-/**
- * Provides a method to convert a value from one type to another using a named conversion or a {@link Converter}.
- *
- * @template T - The type of the object's value, for {@link TBase}.
- * @template F - The map of named conversion keys to the types they convert to.
- *
- * @example
- * ```ts
- * import { assertEquals } from '@std/assert';
- * import type { TConvertible } from './interfaces.ts';
- * import type { Converter } from './type_aliases.ts';
- *
- * interface ConvertibleMap {
- * 	'symbol': symbol,
- * 	'other': { id: string },
+ *   clone(): User {
+ *     return new User(this.name, this.age);
+ *   }
  * }
  *
- * const obj: TConvertible<number, ConvertibleMap> = {
- * 	 [Symbol.toPrimitive](hint: string): string | number {
- * 	 	 if (hint === 'number') {
- * 	 	 	 return this.valueOf();
- * 	 	 }
+ * const user = new User('Sidor', 80);
+ * const clone = user.clone();
  *
- * 	 	 return this.toString();
- * 	 },
- * 	 toString() {
- * 	 	 return `${this.valueOf()}`;
- * 	 },
- * 	 valueOf() {
- * 	 	 return 42;
- * 	 },
- * 	 convertTo<K extends keyof ConvertibleMap>(t: K): ConvertibleMap[K] {
- * 	 	 const value = this.valueOf();
- * 	 	 const id = `${value}`;
- *
- * 	 	 if (t === 'symbol') {
- * 	 	 	 return Symbol(id) as ConvertibleMap[K];
- * 	 	 }
- *
- * 	 	 return {id} as ConvertibleMap[K];
- * 	 },
- * 	 convert<T>(converter: Converter<number, T>): T {
- * 	 	 const value = this.valueOf();
- *
- * 	 	 if (typeof converter === 'function') {
- * 	 	 	 return converter(value);
- * 	 	 }
- *
- * 	 	 return converter.convert(value);
- * 	 }
- * };
- *
- * const symValue = obj.convertTo('symbol');
- * const otherValue = obj.convertTo('other');
- * const result = obj.convert(val => val.toString());
+ * console.assert(clone.name === 'Sidor'); // ✔
+ * console.assert(clone.age === 80);       // ✔
  * ```
  */
-// deno-lint-ignore no-explicit-any
-export interface TConvertible<T, M extends Record<string, any>>
-  extends TBase<T> {
+export interface TCloneable<T> {
   /**
-   * Converts the instance value to a named conversion type.
-   *
-   * @template K - The named conversion types.
-   *
-   * @param toType The named conversion to use.
+   * Returns a new instance of the same type with the same value.
    */
-  convertTo<K extends keyof M>(toType: K): M[K];
-
-  /**
-   * Converts the instance value to type `T` type using a {@link Converter}.
-   *
-   * @template C - The type to convert the instance value to.
-   *
-   * @param converter The converter to use to convert the instance value to `T`.
-   */
-  convert<C>(converter: Converter<T, C>): C;
+  clone(): T;
 }
 
 /**
- * Provides a mechanism to compare the current class instance to another instance.
+ * A `TComparable` is an interface providing implementing types a method to
+ * compare themselves to an instance of a common type.
  *
- * @template T - The value type being compared. Usually the class type itself.
+ * The `TComparable` interface provides the {@link compareTo} method, which
+ * compares an implementing type to a value of an overlapping type.
  *
- * @example
+ * @template T The overlapping type to compare.
+ *
+ * @example Example usage of the `TComparable` interface.
  * ```ts
- * import { assertEquals } from '@std/assert';
  * import { ComparisonResult } from './enums.ts';
  * import type { TComparable } from './interfaces.ts';
  *
- * class Example implements TComparable<Example> {
- * 	 constructor(protected name: string){ }
+ * class User implements TComparable<User> {
+ *   constructor(public name: string, public age: number) {}
  *
- * 	 compareTo(other: Example, reverse = false): ComparisonResult {
- * 	 	 const result = this.name > other.name
- * 	 	 	 ? (reverse ? ComparisonResult.Lesser : ComparisonResult.Greater)
- * 	 	 	 : this.name < other.name
- * 	 	 	 	 ? (reverse ? ComparisonResult.Greater : ComparisonResult.Lesser)
- * 	 	 	 	 : ComparisonResult.Equal;
+ *   compareTo(other: User, reverse = false): ComparisonResult {
+ *     const [a, b] = reverse ? [other, this] : [this, other];
  *
- * 	 	 return result
- * 	 }
+ *     if (a.name === b.name) {
+ *       if (a.age === b.age) return ComparisonResult.Equal;
+ *
+ *       return a.age > b.age
+ * 	      ? ComparisonResult.Greater
+ * 	      : ComparisonResult.Lesser;
+ *     }
+ *
+ *     return a.name > b.name
+ * 	    ? ComparisonResult.Greater
+ * 	    : ComparisonResult.Lesser;
+ *   }
  * }
  *
- * const exA = new Example('apple');
- * const exB = new Example('banana');
+ * const user1 = new User('Fatima', 80);
+ * const user2 = new User('Panteleimon', 80);
+ * const user3 = new User('Panteleimon', 66);
+ * const user4 = new User('Fatima', 80);
  *
- * assertEquals(exA.compareTo(exB), ComparisonResult.Lesser);
+ * console.assert(user1.compareTo(user2) === ComparisonResult.Lesser);       // ✔
+ * console.assert(user2.compareTo(user1) === ComparisonResult.Greater);      // ✔
+ * console.assert(user2.compareTo(user3, true) === ComparisonResult.Lesser); // ✔
+ * console.assert(user4.compareTo(user1) === ComparisonResult.Equal);        // ✔
  * ```
  */
 export interface TComparable<T> {
   /**
-   * Compare the current instance to another instance, optionally specifying the direction of the equality check.
+   * Compares the implementing type to an instance of an overlapping type,
+   * optionally specifying whether to reverse the comparison.
    *
-   * @param other - The other instance to check the current instance against.
-   * @param reverse - Whether to reverse the comparison.
-   *
-   * @returns The comparison result.
+   * @param other The value to compare the implementing type to.
+   * @param reverse Whether to reverse the comparison. Defaults to false.
    */
-  compareTo(other: T, reverse: boolean): ComparisonResult;
+  compareTo(other: T, reverse?: boolean): ComparisonResult;
 }
 
 /**
- * Provides a mechanism to compare two values of the same type.
+ * A `TComparer` is an interface providing a method to compare two instances of
+ * a common type.
  *
- * @template T - The types of values this comparer can operate on.
+ * The `TComparer` interface provides the {@link compare} method for comparing
+ * two values of the same type.
  *
- * @example
+ * Comparisons are treated in terms of how `a` compares to `b`. For example, if
+ * `a = 5` and `b = 6` and comparing `a` to `b` would result in `a < b`, or a
+ * {@link ComparisonResult} or {@link ComparisonResult.Lesser}.
+ *
+ * Specifying `true` in the reverse argument should result in the comparison
+ * value switching sides, so while we are still comparing `a = 5` and `b = 6`,
+ * we are now comparing `b` to `a`, such that `b > a` resulting in a
+ * {@link ComparisonResult} of {@link ComparisonResult.Greater}.
+ *
+ * @template T The type of the values to compare.
+ *
+ * @example Example usage of the `TComparer` interface.
  * ```ts
- * import { assertEquals } from '@std/assert';
  * import { ComparisonResult } from './enums.ts';
+ * import type { Comparer } from './type_aliases.ts';
  * import type { TComparer } from './interfaces.ts';
  *
- *  const comparer: TComparer<number> = {
- * 	 compare(a: number, b: number, reverse = false) {
- * 	 	 const result = a > b
- * 	 	 	 ? (reverse ? ComparisonResult.Lesser : ComparisonResult.Greater)
- * 	 	 	 : a < b
- * 	 	 	 	 ? (reverse ? ComparisonResult.Greater : ComparisonResult.Lesser)
- * 	 	 	 	 : ComparisonResult.Equal;
+ * type User = {
+ *   name: string;
+ *   age: number;
+ * }
  *
- * 	 	 return result;
- * 	 }
- * };
+ * const comparer: TComparer<User> = {
+ *   compare(a: User, b: User, reverse = false): ComparisonResult {
+ *     if (reverse) [a, b] = [b, a];
  *
- * assertEquals(comparer.compare(1, 3), ComparisonResult.Lesser);
- * assertEquals(comparer.compare(1, 3, true), ComparisonResult.Greater);
- * assertEquals(comparer.compare(1, 1), ComparisonResult.Equal);
+ *     if (a.name === b.name) {
+ *       if (a.age === b.age) return ComparisonResult.Equal;
+ *
+ *       return a.age > b.age
+ * 	      ? ComparisonResult.Greater
+ * 	      : ComparisonResult.Lesser;
+ *     }
+ *
+ *     return a.name > b.name
+ * 	    ? ComparisonResult.Greater
+ * 		   : ComparisonResult.Lesser;
+ *   }
+ * }
+ *
+ * const user1: User = { name: 'Savely', age: 45 };
+ * const user2: User = { name: 'Nestor', age: 45 };
+ * const user3: User = { name: 'Nestor', age: 25 };
+ * const user4: User = { name: 'Savely', age: 45 };
+ *
+ * console.assert(comparer.compare(user2, user1) === ComparisonResult.Lesser);       // ✔
+ * console.assert(comparer.compare(user1, user2) === ComparisonResult.Greater);      // ✔
+ * console.assert(comparer.compare(user2, user3, true) === ComparisonResult.Lesser); // ✔
+ * console.assert(comparer.compare(user1, user4) === ComparisonResult.Equal);        // ✔
  * ```
  */
 export interface TComparer<T> {
   /**
-   * Compare two values for equality, optionally reversing the comparison.
+   * Compares two value of the same type, optionally reversing the comparison.
    *
-   * @param a The first value of the comparison.
-   * @param b The second value of the comparison.
-   * @param reverse Whether to reverse the comparison.
+   * @param a The first value to compare.
+   * @param b The second value to compare.
+   * @param reverse Whether to reverse the comparison. Defaults to `false`.
    */
   compare(a: T, b: T, reverse?: boolean): ComparisonResult;
 }
 
 /**
- * Provides a mechanism to sort instance properties or indices.
+ * A `TConverter` is an interface providing a method for converting a value of
+ * one type that another type.
  *
- * @template T - The value type being sorted.
+ * The `TConverter` interface provides the {@link convert} method for
+ * converting a value of one type to another type.
  *
- * @example
+ * @template F The type of value that is to be converted.
+ * @template T The type the input value is to be converted to.
+ *
+ * @example Example usage of the `TConverter` interface.
  * ```ts
- * import { assertEquals } from '@std/assert';
- * import { ComparisonResult } from './enums.ts';
- * import type { TSortable } from './interfaces.ts';
- * import type { Comparer } from './type_aliases.ts';
+ * import type { TConverter } from './interfaces.ts';
  *
- * class SortableArray<T> implements TSortable<T> {
- *   constructor(public readonly array: T[]) {}
+ * type User = {
+ *   name: string;
+ *   age: number;
+ * }
  *
- *   sort(comparer: Comparer<T>, reverse = false): void {
- *     this.array.sort((a, b) => {
- *       return (typeof comparer === 'function')
- *         ? comparer(a, b, reverse)
- *         : comparer.compare(a, b, reverse);
- *     });
- *   }
- *
- *   [Symbol.iterator](): Iterator<T> {
- *     return this.array[Symbol.iterator]();
+ * const converter: TConverter<User, string> = {
+ *   convert(user: User): string {
+ *     return `${user.name} is ${user.age} years old`;
  *   }
  * }
  *
- * const array = new SortableArray([3, 2, 1]);
+ * const user: User = { name: 'Charles', age: 22 };
+ * const converted = converter.convert(user);
  *
- * const comparer: Comparer<number> = {
- *   compare(a: number, b: number, reverse = false): ComparisonResult {
- *     const [x, y] = reverse ? [b, a] : [a, b];
- *
- *     return x < y
- *       ? ComparisonResult.Lesser
- *       : x > y
- *       ? ComparisonResult.Greater
- *       : ComparisonResult.Equal;
- *   },
- * };
- * array.sort(comparer);
- *
- * assertEquals([...array], [1, 2, 3]);
- *
- * array.sort(comparer, true);
- *
- * assertEquals([...array], [3, 2, 1]);
+ * console.assert(converted === 'Charles is 22 years old'); // ✔
  * ```
  */
-export interface TSortable<T> extends Iterable<T> {
+export interface TConverter<F, T> {
   /**
-   * Sort instance properties or indices using a {@link Comparer}.
+   * Converts an input value of type `F` to a value of type `T`.
    *
-   * @param comparer - The comparer used to sort the instance properties or indices.
-   * @param reverse - Whether to reverse sort the instance properties or indices.
+   * @param value The value that is to be converted.
    */
-  sort(comparer: Comparer<T>, reverse: boolean): void;
+  convert(value: F): T;
 }
 
 /**
- * Describes a semantic versioning version.
+ * A `TConvertible` is an interface providing that can convert its value to
+ * other types.
  *
- * @example
+ * The `TConvertible` interface provides methods to convert an implementing
+ * type's value to other types.
+ *
+ * The `M` type is a mapping type, mapping named conversions as keys to the
+ * conversion types they represent.
+ *
+ * @template T The type of the object's value. For {@link TBase} and conversion source value.
+ * @template M The map of named conversion keys to the target conversion types they represent.
+ *
+ * @see {@link TBase}
+ *
+ * @example Example usage of the `TConvertible` interface.
  * ```ts
- * import type { IVersionDescriptor } from './interfaces.ts';
+ * import type { Converter } from './type_aliases.ts';
+ * import type { TConvertible } from './interfaces.ts';
  *
- * const currentBuild: IVersionDescriptor = {
- * 	 major: 1,
- * 	 minor: 2,
- * 	 patch: 55,
- * 	 build: 'pancake-9458',
- * };
+ * type UserConversion = {
+ *   message: string;
+ *   signature: string;
+ *   age: number;
+ * }
+ *
+ * class User implements TConvertible<number, UserConversion> {
+ *   constructor(private name: string, private age: number) {}
+ *
+ *   [Symbol.toPrimitive](hint: string): string | number {
+ *     if (hint === 'number') return this.valueOf();
+ *
+ *     return this.toString();
+ *   }
+ *
+ *   toString(): string {
+ *     return this.name;
+ *   }
+ *
+ *   valueOf(): number {
+ *     return this.age;
+ *   }
+ *
+ *   convertTo<K extends keyof UserConversion>(type: K): UserConversion[K] {
+ *     if (type === 'message') {
+ * 	    return `${this.name} is ${this.age} years old` as UserConversion[K];
+ *     }
+ *     if (type === 'signature') {
+ * 	    return `${this.name}:${this.age}` as UserConversion[K];
+ *     }
+ *     if (type === 'age') return this.age as UserConversion[K];
+ *
+ *     throw new Error('Invalid conversion type');
+ *   }
+ *
+ *   convert<C>(converter: Converter<number, C>): C {
+ *     if (typeof converter === 'function') return converter(this.age);
+ *
+ *     return converter.convert(this.age);
+ *   }
+ * }
+ *
+ * const untilRetirement = (age: number): number => 65 - age;
+ *
+ * const user = new User('Azura', 19);
+ *
+ * console.assert(user.convertTo('message') === 'Azura is 19 years old'); // ✔
+ * console.assert(user.convertTo('signature') === 'Azura:19');            // ✔
+ * console.assert(user.convertTo('age') === 19);                          // ✔
+ * console.assert(user.convert(untilRetirement) === 46);                  // ✔
  * ```
- *
- * @see {@link https://semver.org|Semantic Versioning}
  */
-export interface IVersionDescriptor {
+export interface TConvertible<T, M extends AnyObject> extends TBase<T> {
   /**
-   * The major version of the version.
+   * Converts the object's type to a type associated with a named conversion
+   * key.
+   *
+   * @param toType The key of the named conversion to convert the object's type to.
+   *
+   * @template K The named conversion keys.
    */
-  major: number;
+  convertTo<K extends keyof M>(toType: K): M[K];
 
   /**
-   * The minor version of the version.
+   * Converts the object's type to another type using a {@link Converter}.
+   *
+   * @param converter The {@link Converter} to use to convert the object's value to another type.
+   *
+   * @template C The resulting type of the conversion.
+   *
+   * @see {@link Converter}
    */
-  minor: number;
+  convert<C>(converter: Converter<T, C>): C;
+}
 
+/**
+ * A `TSortable` is an interface providing implementing types a method to sort
+ * their internal array.
+ *
+ * The `TSortable` interface provides the {@link sort} method for sorting the
+ * elements of the implementing type's internal array.
+ *
+ * @template T The type of the elements of the object's internal array.
+ *
+ * @example Example usage of the `TSortable` interface.
+ * ```ts
+ * import { ComparisonResult } from './enums.ts';
+ * import type { Comparer } from './type_aliases.ts';
+ * import type { TSortable } from './interfaces.ts';
+ *
+ * type User = {
+ *   name: string;
+ *   age: number;
+ * }
+ *
+ * class UserGroup implements TSortable<User> {
+ *   constructor(private users: User[]) {}
+ *
+ *   sort(comparer: Comparer<User>, reverse = false): void {
+ *     this.users = [...this.users].sort((a, b) => {
+ *       if (typeof comparer === 'function') return comparer(a, b, reverse);
+ *       return comparer.compare(a, b, reverse);
+ *     });
+ *   }
+ *
+ *   get list(): string {
+ *     return this.users.map((u) => `${u.name}:${u.age}`).join(' ');
+ *   }
+ * }
+ *
+ * const users = [
+ *   { name: 'Amabella', age: 46 },
+ *   { name: 'Malagigi', age: 56 },
+ *   { name: 'Claude', age: 25 },
+ *   { name: 'Malagigi', age: 46 },
+ * ];
+ *
+ * const group = new UserGroup(users);
+ * const userSorter = (
+ * 	a: User,
+ * 	b: User,
+ * 	reverse = false
+ * ): ComparisonResult => {
+ *   if (reverse) [a, b] = [b, a];
+ *
+ *   if (a.name === b.name) {
+ *     if (a.age === b.age) return ComparisonResult.Equal;
+ *
+ *     return a.age > b.age
+ * 	    ? ComparisonResult.Greater
+ * 	    : ComparisonResult.Lesser;
+ *   }
+ *
+ *   return a.name > b.name
+ * 	  ? ComparisonResult.Greater
+ * 	  : ComparisonResult.Lesser;
+ * };
+ *
+ * group.sort(userSorter);
+ * const sortedList = group.list;
+ *
+ * group.sort(userSorter, true);
+ * const reversedList = group.list;
+ *
+ * console.assert(sortedList === 'Amabella:46 Claude:25 Malagigi:46 Malagigi:56');   // ✔
+ * console.assert(reversedList === 'Malagigi:56 Malagigi:46 Claude:25 Amabella:46'); // ✔
+ * ```
+ */
+export interface TSortable<T> {
   /**
-   * The patch version of the version.
+   * Sorts the elements of the object's internal array using a
+   * {@link Comparer}, optionally specifying whether to reverse the sort.
+   *
+   * @param comparer The {@link Comparer} to use to sort the elements of the object's internal array.
+   * @param reverse Whether to reverse the comparison. Defaults to `false`.
    */
-  patch: number;
-
-  /**
-   * The pre-release of the version.
-   */
-  preRelease?: string;
-
-  /**
-   * The build of the version.
-   */
-  build?: string;
+  sort(comparer: Comparer<T>, reverse?: boolean): void;
 }

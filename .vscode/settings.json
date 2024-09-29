@@ -5,6 +5,6 @@
   "deno.codeLens.test": true,
   "deno.enable": true,
   "deno.lint": true,
-  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.completeFunctionCalls": false,
   "typescript.suggest.autoImports": true
 }
