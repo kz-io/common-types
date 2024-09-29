@@ -4,109 +4,162 @@
  */
 
 /**
- * Specifies the comparison result of two values.
+ * A `ComparisonResult` is the result of comparing two values.
  *
- * @example
+ * The `ComparisonResult` enum narrows the results typically available for
+ * comparing and sorting. Its purpose is to be explicit when implementing
+ * comparison and sorting methods. It does not imply anything as to how values
+ * are compared or sorted, but to the desired result of the comparison.
+ * If `7 > q > {the color blue}` in the eyes of the implementer, so be it.
+ *
+ * @example Example usage of the `ComparisonResult` enum.
  * ```ts
- * import { assertEquals } from '@std/assert';
  * import { ComparisonResult } from './mod.ts';
+
+ * type User = {
+ *   name: string;
+ *   age: number;
+ * };
  *
- * const a = 1;
- * const b = 2;
+ * const comparer = (a: User, b: User, reverse = false): ComparisonResult => {
+ *   if (reverse) [a, b] = [b, a];
  *
- * const result = a < b
- *   ? ComparisonResult.Lesser
- *   : a > b
- *     ? ComparisonResult.Greater
- *     : ComparisonResult.Equal;
+ *   if(a.name === b.name) {
+ *     if (a.age === b.age) return ComparisonResult.Equal;
  *
- * assertEquals(result, ComparisonResult.Lesser);
+ *     return a.age > b.age ? ComparisonResult.Greater : ComparisonResult.Lesser;
+ *   }
+ *
+ *   return a.name > b.name ? ComparisonResult.Greater : ComparisonResult.Lesser;
+ * };
+ *
+ * const users = [
+ *   {name: 'Tiffany', age: 46},
+ *   {name: 'Florian', age: 56},
+ *   {name: 'Edgar', age: 25},
+ *   {name: 'Florian', age: 46},
+ * ];
+ *
+ * const sorted = [...users].sort((a, b) => comparer(a, b));
+ * const sortedList = sorted.map((u) => `${u.name}:${u.age}`).join(' ');
+ * const reversed = [...users].sort((a, b) => comparer(a, b, true));
+ * const reversedList = reversed.map((u) => `${u.name}:${u.age}`).join(' ');
+ *
+ * console.assert(sortedList === 'Edgar:25 Florian:46 Florian:56 Tiffany:46');   // ✔
+ * console.assert(reversedList === 'Tiffany:46 Florian:56 Florian:46 Edgar:25'); // ✔
  * ```
  */
 export enum ComparisonResult {
   /**
-   * The first value is less than the second value.
+   * The resultant comparison of `a` to `b` is that
+   * `a` is lesser than `b`.
    */
   Lesser = -1,
 
   /**
-   * The two values are equal.
+   * The resultant comparison of `a` to `b` is that
+   * `a` is equal to `b`.
    */
   Equal = 0,
 
   /**
-   * The first value is greater than the second value.
+   * The resultant comparison of `a` to `b` is that
+   * `a` is greater than `b`.
    */
   Greater = 1,
 }
 
 /**
- * Specifies the position of an item in a list.
+ * A `ListPosition` is a description of an element's position in an array.
  *
- * @example
+ * The `ListPosition` enum is used where an element's position in an array is
+ * required. This is in simpler terms of first, middle, and last, or whether it
+ * is the only element in the array or has an index outside the array, which is
+ * generally more useful information than the element's index in the array.
+ *
+ * > Implementers may attempt to utilize the bit-wise nature to combine values,
+ * > such as `ListPosition.First | ListPosition.Middle`. There is no need, as an
+ * > element that is last-and-middle, first-and-middle, or first-and-last is the
+ * > only element in the array. The {@link ListPosition.Only} is already
+ * > descriptive of that scenario. An element cannot be both outside and within
+ * > the array.
+ *
+ * @example Example usage of the `ListPosition` enum.
  * ```ts
- * import { assertEquals } from '@std/assert';
  * import { ListPosition } from './mod.ts';
  *
- * const items = [1, 2, 3];
- *
- * function getItemPosition(item: number): ListPosition {
- *   if (item === items[0]) {
- *     return ListPosition.First;
- *   } else if (item === items[items.length - 1]) {
- *     return ListPosition.Last;
- *   }
+ * function getItemPosition(index: number, length: number): ListPosition {
+ *   if (length === 0) return ListPosition.Outside;
+ *   if (index === 0 && length === 1) return ListPosition.Only;
+ *   if (index === length - 1) return ListPosition.Last;
+ *   if (index === 0) return ListPosition.First;
  *
  *   return ListPosition.Middle;
  * }
  *
- * assertEquals(getItemPosition(1), ListPosition.First);
- * assertEquals(getItemPosition(2), ListPosition.Middle);
- * assertEquals(getItemPosition(3), ListPosition.Last);
+ * console.assert(getItemPosition(0, 1) === ListPosition.Only);   // ✔
+ * console.assert(getItemPosition(0, 2) === ListPosition.First);  // ✔
+ * console.assert(getItemPosition(1, 2) === ListPosition.Last);   // ✔
+ * console.assert(getItemPosition(1, 3) === ListPosition.Middle); // ✔
  * ```
  */
 export enum ListPosition {
   /**
-   * The first position in a list.
+   * The element is the first element in the array (index is `0`).
    */
-  First = 0,
+  First = 1,
 
   /**
-   * Any item in a list that is not the first or last.
+   * The element is in the middle of the array (index is not `0` or
+   * `length -1`, but is between `0` and `length - 1`).
    */
-  Middle = 1,
+  Middle = 2,
 
   /**
-   * The last position in a list.
+   * The element is the last element in the array (index is `length - 1`).
    */
-  Last = -1,
+  Last = 4,
+
+  /**
+   * The element is the only element in the array, so technically first,
+   * middle, and last (index is `0` and `length - 1`).
+   */
+  Only = 7,
+
+  /**
+   * The element is not part of the array (index is not between `0` and
+   * `length - 1`.
+   */
+  Outside = 0,
 }
 
 /**
- * Specifies the parity of a value.
+ * A `Parity` is a description of a value being even or odd.
  *
- * @example
+ * The `Parity` enum is used where only whether a value is even or odd is necessary.
+ *
+ * @example Example usage of the `Parity` enum.
  * ```ts
- * import { assertEquals } from '@std/assert';
  * import { Parity } from './mod.ts';
  *
- * const number = 3;
+ * function getItemParity(index: number): Parity {
+ *   return index % 2 === 0 ? Parity.Even : Parity.Odd;
+ * }
  *
- * const parity = number % 2 === 0
- *   ? Parity.Even
- *   : Parity.Odd;
- *
- * assertEquals(parity, Parity.Odd);
+ * console.assert(getItemParity(0) === Parity.Even); // ✔
+ * console.assert(getItemParity(1) === Parity.Odd);  // ✔
+ * console.assert(getItemParity(2) === Parity.Even); // ✔
+ * console.assert(getItemParity(3) === Parity.Odd);  // ✔
  * ```
  */
 export enum Parity {
   /**
-   * Value is even.
+   * The value is even.
    */
   Even = 0,
 
   /**
-   * Value is odd.
+   * The value is odd.
    */
   Odd = 1,
 }
