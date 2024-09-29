@@ -21,7 +21,7 @@ jobs:
           - windows-2022
           - macOS-12
         deno: 
-          - v1.42.4
+          - v1.46.3
           - v1.x
 
     steps:
