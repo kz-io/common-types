@@ -13,7 +13,9 @@ import type {
   AnyArray,
   AnyObject,
   Binary,
+  BitByte,
   BitValue,
+  ByteString,
   // Clean, Currently untestable
   Comparer,
   ComparerFn,
@@ -25,6 +27,7 @@ import type {
   // DecoratorTarget, Currently untestable
   Empty,
   Func,
+  HexByte,
   HexValue,
   IndeterminateObject,
   IsAny,
@@ -233,6 +236,20 @@ describe('Type aliases', () => {
     });
   });
 
+  describe('BitByte', () => {
+    it('is a string of 8 bits', () => {
+      function byteToNumber(byte: BitByte): number {
+        return parseInt(byte, 2);
+      }
+
+      const num1 = byteToNumber('10011011');
+      const num2 = byteToNumber('11001101');
+
+      assertEquals(num1, 155);
+      assertEquals(num2, 205);
+    });
+  });
+
   describe('BitValue', () => {
     it('can be a boolean or a number', () => {
       function bitsToNumber(value: Octuple<BitValue>): number {
@@ -244,6 +261,24 @@ describe('Type aliases', () => {
 
       assertEquals(num1, 155);
       assertEquals(num2, 205);
+    });
+  });
+
+  describe('ByteString', () => {
+    it('is a string of 8 bits in either binary or hexadecimal', () => {
+      function byteToNumber(byte: ByteString): number {
+        if (byte.match(/[a-f]/i)) {
+          return parseInt(byte, 16);
+        }
+
+        return parseInt(byte, 2);
+      }
+
+      const num1 = byteToNumber('10011011');
+      const num2 = byteToNumber('9b');
+
+      assertEquals(num1, 155);
+      assertEquals(num2, 155);
     });
   });
 
@@ -358,11 +393,11 @@ describe('Type aliases', () => {
       }
 
       class ComplianceAdmin extends User {
-        protected role: string = 'compliance-admin';
+        protected override role: string = 'compliance-admin';
       }
 
       class Admin extends User {
-        protected role: string = 'admin';
+        protected override role: string = 'admin';
       }
 
       function createUser(name: string, role: Constructor<User>): User {
@@ -591,6 +626,20 @@ describe('Type aliases', () => {
       assertEquals(sum, 15);
       assertEquals(count, 10);
       assertEquals(resultingSum, 110);
+    });
+  });
+
+  describe('HexByte', () => {
+    it('is a string of 8 bits in hexadecimal', () => {
+      function byteToNumber(byte: HexByte): number {
+        return parseInt(byte, 16);
+      }
+
+      const num1 = byteToNumber('9B');
+      const num2 = byteToNumber('CD');
+
+      assertEquals(num1, 155);
+      assertEquals(num2, 205);
     });
   });
 
