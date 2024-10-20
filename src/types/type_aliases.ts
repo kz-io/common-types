@@ -220,6 +220,52 @@ export type Binary<T1, T2 = T1> = [T1, T2];
 export type BitValue = 0 | 1;
 
 /**
+ * A `BitByte` is a textual representation of a byte in bits.
+ *
+ * @example Example usage of the `BitByte` type.
+ * ```ts
+ * import type { BitByte } from './type_aliases.ts';
+ *
+ * function bitsToNumber(value: BitByte): number {
+ *   return parseInt(value, 2);
+ * }
+ *
+ * const num1 = bitsToNumber('10011011');
+ * const num2 = bitsToNumber('11001101');
+ *
+ * console.assert(num1 === 155); // ✔
+ * console.assert(num2 === 205); // ✔
+ * ```
+ */
+export type BitByte =
+  `${BitValue}${BitValue}${BitValue}${BitValue}${BitValue}${BitValue}${BitValue}${BitValue}`;
+
+/**
+ * A `ByteString` is a textual representation of a byte in bits or hexadecimal.
+ *
+ * @example Example usage of the `ByteString` type.
+ *
+ * ```ts
+ * import type { ByteString } from './type_aliases.ts';
+ *
+ * function byteToNumber(value: ByteString): number {
+ *   if (value.match(/[a-f]/i)) {
+ *     return parseInt(value, 16);
+ *   }
+ *
+ *   return parseInt(value, 2);
+ * }
+ *
+ * const num1 = byteToNumber('10011011');
+ * const num2 = byteToNumber('9B');
+ *
+ * console.assert(num1 === num2); // ✔
+ * console.assert(num2 === 155);  // ✔
+ * ```
+ */
+export type ByteString = BitByte | HexByte;
+
+/**
  * A `Clean` is a complex type flattened to improve IDE readability.
  *
  * The `Clean` type is used to improving the development experience by
@@ -364,11 +410,11 @@ export type ComparerFn<T> = (a: T, b: T, reverse?: boolean) => ComparisonResult;
  * }
  *
  * class ComplianceAdmin extends User {
- *   protected role: string = 'compliance-admin';
+ *   protected override role: string = 'compliance-admin';
  * }
  *
  * class Admin extends User {
- *   protected role: string = 'admin';
+ *   protected override role: string = 'admin';
  * }
  *
  * function createUser(name: string, role: Constructor<User>): User {
@@ -714,6 +760,26 @@ export type Func<
   : T extends Monadic<infer T1> ? MonadicOptionFunc<T1, O, R>
   : T extends Dyadic<infer T1, infer T2> ? DyadicOptionFunc<T1, T2, O, R>
   : never;
+
+/**
+ * A `HexByte` is a textual representation of a byte in hexadecimal.
+ *
+ * @example Example usage of the `HexByte` type.
+ * ```ts
+ * import type { HexByte, Quadruple } from './type_aliases.ts';
+ *
+ * function hexToNumber(hex: Quadruple<HexByte>): number {
+ *   return parseInt(hex.join(''), 16);
+ * }
+ *
+ * const num1 = hexToNumber(['19', '36', 'e7', 'fb']);
+ * const num2 = hexToNumber(['ac', '0d', '03', '0d']);
+ *
+ * console.assert(num1 === 423028731);  // ✔
+ * console.assert(num2 === 2886533901); // ✔
+ * ```
+ */
+export type HexByte = `${HexValue}${HexValue}`;
 
 /**
  * A `HexValue` is a numeric and textual representation of a hexadecimal value.
